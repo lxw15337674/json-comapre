@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "lib": [
+            "es5",
+            "es6",
+            "dom"
+        ],
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": false,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "isolatedModules": false,
+        "allowJs": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "strictNullChecks": false,
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "awesomeTypescriptLoaderOptions": {
+        "reportFiles": [
+            "./src/**/*"
+        ]
+    }
+}
