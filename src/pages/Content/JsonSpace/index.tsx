@@ -1,18 +1,65 @@
-import React, { ReactEventHandler, useMemo, useState } from 'react';
-import { StyledContainer, StyledPre } from './styled';
-
+import React, { useEffect, useMemo, useState } from 'react';
+import { StyledContainer } from './styled';
+import { Button, Input } from 'antd';
+import { extend, compare } from './utils';
+const { TextArea } = Input;
 interface Props {
   value: string;
   compareValue?: string;
-  onInput: (value: string) => void;
+  setValue: (value: React.SetStateAction<string>) => void;
 }
-const CodeContainer: React.FC<Props> = ({ value, compareValue, onInput }) => {
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onInput(e.target.innerText || '');
+
+const CodeContainer = ({ value, compareValue, setValue }: Props) => {
+  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log(e.target.value);
+  //   setValue(e.target.value || '');
+  // };
+  // const onKeyup = (e: any) => {
+  //   // enter换行
+  //   // if (e.keyCode === 13) {
+  //   //   console.log('enter');
+  //   //   setValue((str) => str + '/r/n');
+  //   // }
+  // };
+  // const onPaste = (e: any) => {
+  //   // 如果剪贴板没有数据则直接返回
+  //   if (!(e.clipboardData && e.clipboardData.items)) {
+  //     return;
+  //   }
+  //   e.preventDefault();
+  //   const text = e.clipboardData.getData('text/plain');
+  //   setValue(text);
+  // };
+  const [isJson, setIsJson] = useState(true);
+  const onInput = (e) => {
+    const value = e.target.value;
+    try {
+      setValue(JSON.stringify(JSON.parse(value), null, 4));
+      setIsJson(true);
+    } catch (e) {
+      console.log(e);
+      setIsJson(false);
+      setValue(value);
+    }
   };
+  useEffect(() => {
+    let obj,
+      compareObj,
+      canCompare = true;
+    try {
+      obj = JSON.parse(value);
+      compareObj = JSON.parse(compareValue);
+    } catch (e) {
+      canCompare = false;
+    }
+    if (canCompare) {
+      let a = compare(obj, compareObj);
+      console.log(a);
+    }
+  }, [compareValue, value]);
   return (
-    <StyledContainer>
-      <StyledPre contentEditable='true' onInput={handleInput}></StyledPre>
+    <StyledContainer isJson={isJson}>
+      <TextArea value={value} onChange={onInput}></TextArea>
     </StyledContainer>
   );
 };
