@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { StyledContainer } from './styled';
 import { Button, Input } from 'antd';
-import { extend, compare } from './utils';
+import { compare } from './utils';
+import View from './View';
 const { TextArea } = Input;
 interface Props {
   value: string;
@@ -42,7 +43,7 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
       setValue(value);
     }
   };
-  useEffect(() => {
+  const compareResult = useMemo(() => {
     let obj,
       compareObj,
       canCompare = true;
@@ -53,12 +54,14 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
       canCompare = false;
     }
     if (canCompare) {
-      let a = compare(obj, compareObj);
-      console.log(a);
+      return compare(obj, compareObj);
+    } else {
+      return {};
     }
   }, [compareValue, value]);
   return (
     <StyledContainer isJson={isJson}>
+      <View result={compareResult} source={JSON.parse(value)}></View>
       <TextArea value={value} onChange={onInput}></TextArea>
     </StyledContainer>
   );

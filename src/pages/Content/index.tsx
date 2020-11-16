@@ -13,11 +13,11 @@ const Content = () => {
         setValue={(value) => setSourceJson(value)}
         compareValue={compareJson}
       ></JsonSpace>
-      <JsonSpace
+      {/* <JsonSpace
         value={compareJson}
         setValue={(value) => setCompareJson(value)}
         compareValue={sourceJson}
-      ></JsonSpace>
+      ></JsonSpace> */}
     </Container>
   );
 };

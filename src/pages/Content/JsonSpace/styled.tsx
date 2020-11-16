@@ -10,6 +10,7 @@ export const StyledContainer = styled.div<{ isJson: boolean }>`
     display: block;
     position: absolute;
     /* border: 1px solid #1e6fff; */
+    background-color: transparent;
     font-size: 15px;
     resize: none;
     will-change: transform;

@@ -29,37 +29,8 @@ const setObjValue = (sourceObj, value) => {
   }
   return obj;
 };
-
-export const compare = (obj, compareObj) => {
-  // const fullObj = extend(obj, compareObj);
-  let result = Object.entries(obj).reduce((acc, cur, index) => {
-    const [key, value] = cur;
-    const compareValue = compareObj[key];
-    if (isObject(value)) {
-      acc[key] = compare(value, compareValue || {});
-      return acc;
-    }
-    if (isObject(compareValue)) {
-      acc[key] = compare({}, compareValue);
-      return acc;
-    }
-    if (compareValue === undefined) {
-      acc[key] = '+';
-      return acc;
-    }
-    // 这个地方就要进行隐式转换为string，进行比较，解决数组等类型的问题
-    // eslint-disable-next-line eqeqeq
-    acc[key] = value == compareValue ? '=' : 'diff';
-    return acc;
-  }, {});
-  for (let key in compareObj) {
-    if (!result[key]) {
-      if (isObject(compareObj[key])) {
-        result[key] = setObjValue(compareObj[key], '-');
-      } else {
-        result[key] = '-';
-      }
-    }
-  }
-  return result;
+// 字符串循环
+const stringLoop = (str: string, num: number): string => {
+  return num > 1 ? (str += stringLoop(str, --num)) : str;
 };
+
