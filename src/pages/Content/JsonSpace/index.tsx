@@ -1,8 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { StyledContainer } from './styled';
-import { Button, Input } from 'antd';
-import { compare } from './utils';
-import View from './View';
+import React, { useMemo, useState } from 'react';
+import {
+  HalfHightDiv,
+  JsonContainer,
+  LineStatus,
+  NumberLine,
+  NumberLineContainer,
+  StyledContainer,
+} from './styled';
+import { Input } from 'antd';
+import compare from './compare';
 const { TextArea } = Input;
 interface Props {
   value: string;
@@ -11,57 +17,59 @@ interface Props {
 }
 
 const CodeContainer = ({ value, compareValue, setValue }: Props) => {
-  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   console.log(e.target.value);
-  //   setValue(e.target.value || '');
-  // };
-  // const onKeyup = (e: any) => {
-  //   // enter换行
-  //   // if (e.keyCode === 13) {
-  //   //   console.log('enter');
-  //   //   setValue((str) => str + '/r/n');
-  //   // }
-  // };
-  // const onPaste = (e: any) => {
-  //   // 如果剪贴板没有数据则直接返回
-  //   if (!(e.clipboardData && e.clipboardData.items)) {
-  //     return;
-  //   }
-  //   e.preventDefault();
-  //   const text = e.clipboardData.getData('text/plain');
-  //   setValue(text);
-  // };
   const [isJson, setIsJson] = useState(true);
   const onInput = (e) => {
-    const value = e.target.value;
+    setValue(e.target.value);
+  };
+  const sourceObj = useMemo((): object => {
+    let result = {};
     try {
-      setValue(JSON.stringify(JSON.parse(value), null, 4));
+      result = JSON.parse(value);
       setIsJson(true);
+      return result;
     } catch (e) {
       console.log(e);
       setIsJson(false);
-      setValue(value);
+      return result;
     }
-  };
-  const compareResult = useMemo(() => {
-    let obj,
-      compareObj,
-      canCompare = true;
-    try {
-      obj = JSON.parse(value);
-      compareObj = JSON.parse(compareValue);
-    } catch (e) {
-      canCompare = false;
-    }
-    if (canCompare) {
-      return compare(obj, compareObj);
-    } else {
+  }, [value, isJson]);
+  const compareObj = useMemo((): object => {
+    if (!isJson) {
       return {};
     }
-  }, [compareValue, value]);
+    try {
+      return JSON.parse(compareValue);
+    } catch (e) {
+      console.log(e);
+      return {};
+    }
+  }, [compareValue, isJson]);
+  const [comparedJson, lineResult] = useMemo(() => {
+    return compare(sourceObj, compareObj);
+  }, [sourceObj, compareObj]);
   return (
     <StyledContainer isJson={isJson}>
-      <View result={compareResult} source={JSON.parse(value)}></View>
+      <HalfHightDiv>
+        <NumberLineContainer>
+          {lineResult.map((item, index) => {
+            return (
+              <LineStatus key={index}>
+                {index}
+                {item}
+              </LineStatus>
+            );
+          })}
+        </NumberLineContainer>
+        <JsonContainer>
+          {comparedJson.map((item, index) => {
+            return (
+              <div key={index}>
+                <span>{item}</span>
+              </div>
+            );
+          })}
+        </JsonContainer>
+      </HalfHightDiv>
       <TextArea value={value} onChange={onInput}></TextArea>
     </StyledContainer>
   );
