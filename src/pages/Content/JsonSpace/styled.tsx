@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Status } from './interface';
 
 export const StyledContainer = styled.div<{ isJson: boolean }>`
   height: 100%;
@@ -11,16 +12,12 @@ export const StyledContainer = styled.div<{ isJson: boolean }>`
     overflow: scroll;
     display: block;
     position: absolute;
-    /* border: 1px solid #1e6fff; */
     background-color: transparent;
     font-size: 15px;
     resize: none;
     will-change: transform;
     width: 100%;
     box-sizing: border-box;
-    /* &:focus {
-      outline-color: #1e6fff;
-    } */
     ${(props) =>
       !props.isJson &&
       css`
@@ -42,20 +39,31 @@ export const HalfHightDiv = styled.div`
 export const ViewLine = styled.div`
   line-height: 25px;
   font-size: 15px;
-  letter-spacing: 1px;
+  ${({ status }: { status?: Status }) => {
+    switch (status) {
+      case '=':
+        return '';
+      case '+':
+        return `
+        background: green;
+        color:white
+        `;
+      case '-':
+        return `
+        background:rgb(158, 158, 0);
+        color:white
+        
+        `;
+      case 'D':
+        return `
+        background:red;
+        color:white
+        `;
+      default:
+        return '';
+    }
+  }}
 `;
-
-export const DiffDiv = styled(ViewLine)`
-  color: red;
-`;
-
-export const AddDiv = styled(ViewLine)`
-  color: green;
-`;
-export const ReduceDiv = styled(ViewLine)`
-  color: rgb(158, 158, 0);
-`;
-export const EqDiv = styled(ViewLine)``;
 
 export const LineStatus = styled(ViewLine)`
   width: 40px;
@@ -72,4 +80,19 @@ export const NumberLineContainer = styled.div`
 
 export const JsonContainer = styled.div`
   margin-left: 10px;
+`;
+
+export const StyledInputDiv = styled.div`
+  display: flex;
+  position: fixed;
+  bottom: 200px;
+  left: 50%;
+  height: 40px;
+  width: 100px;
+  z-index: 10001;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 8px #a8a8a8;
+  .ant-input {
+    height: 100%;
+  }
 `;

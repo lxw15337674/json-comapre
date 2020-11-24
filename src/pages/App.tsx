@@ -1,17 +1,20 @@
 import { hot } from 'react-hot-loader/root';
-import React from 'react';
 import Header from './Header';
 import Content from './Content';
 import './reset.css';
-
 import './../assets/scss/App.scss';
+import React from 'react';
+import Context, { Reducer } from './state';
 
 const App = () => {
+  const [state, dispatch] = Reducer();
   return (
-    <div className='App'>
-      <Header></Header>
-      <Content></Content>
-    </div>
+    <Context.Provider value={{ state, dispatch }}>
+      <div className='App'>
+        <Header></Header>
+        <Content></Content>
+      </div>
+    </Context.Provider>
   );
 };
 

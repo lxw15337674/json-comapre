@@ -1,5 +1,14 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@pages/*": [
+                "./src/pages/*"
+            ]
+        },
         "outDir": "./dist/",
         "sourceMap": true,
         "noImplicitAny": false,

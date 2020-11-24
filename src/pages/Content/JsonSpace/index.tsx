@@ -3,9 +3,10 @@ import {
   HalfHightDiv,
   JsonContainer,
   LineStatus,
-  NumberLine,
   NumberLineContainer,
   StyledContainer,
+  StyledInputDiv,
+  ViewLine,
 } from './styled';
 import { Input } from 'antd';
 import compare from './compare';
@@ -21,6 +22,7 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
   const onInput = (e) => {
     setValue(e.target.value);
   };
+  const [keyWords, setKeyWords] = useState('');
   const sourceObj = useMemo((): object => {
     let result = {};
     try {
@@ -28,7 +30,6 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
       setIsJson(true);
       return result;
     } catch (e) {
-      console.log(e);
       setIsJson(false);
       return result;
     }
@@ -40,7 +41,6 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
     try {
       return JSON.parse(compareValue);
     } catch (e) {
-      console.log(e);
       return {};
     }
   }, [compareValue, isJson]);
@@ -51,11 +51,11 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
     <StyledContainer isJson={isJson}>
       <HalfHightDiv>
         <NumberLineContainer>
-          {lineResult.map((item, index) => {
+          {lineResult.map((status, index) => {
             return (
-              <LineStatus key={index}>
+              <LineStatus status={status} key={index}>
                 {index}
-                {item}
+                {status}
               </LineStatus>
             );
           })}
@@ -63,13 +63,16 @@ const CodeContainer = ({ value, compareValue, setValue }: Props) => {
         <JsonContainer>
           {comparedJson.map((item, index) => {
             return (
-              <div key={index}>
-                <span>{item}</span>
-              </div>
+              <ViewLine status={lineResult[index]} key={index}>
+                {item}
+              </ViewLine>
             );
           })}
         </JsonContainer>
       </HalfHightDiv>
+      <StyledInputDiv>
+        <Input value={keyWords} onChange={(e) => setKeyWords(e.target.value)}></Input>
+      </StyledInputDiv>
       <TextArea value={value} onChange={onInput}></TextArea>
     </StyledContainer>
   );

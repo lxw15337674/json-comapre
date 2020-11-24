@@ -5,14 +5,14 @@ export function isObject(value) {
 
 // 追加合并，如果存在，则不修改，不存在则追加属性,但value为空
 export const extend = (sourceObj, compareObj) => {
-  let obj = { ...sourceObj };
+  let obj = JSON.parse(JSON.stringify(sourceObj));
   for (const key in compareObj) {
-    if (obj[key]) {
+    if (obj.hasOwnProperty(key)) {
       if (isObject(obj[key])) {
         obj[key] = extend(obj[key], compareObj[key]);
       }
     } else {
-      obj[key] = undefined;
+      obj[key] = null;
     }
   }
   return obj;

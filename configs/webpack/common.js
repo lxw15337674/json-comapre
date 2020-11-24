@@ -6,8 +6,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      '@src': resolve('src'),
+      '@component': resolve('src/component'),
+      '@pages': resolve('src/pages'),
+      '@utils': resolve('src/utils'),
+    },
   },
   context: resolve(__dirname, '../../src'),
+
   module: {
     rules: [
       {

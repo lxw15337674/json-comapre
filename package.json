@@ -51,6 +51,8 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "antd": "^4.8.2"
+    "@reduxjs/toolkit": "^1.4.0",
+    "antd": "^4.8.2",
+    "redux": "^4.0.5"
   }
 }

@@ -1,32 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import JsonSpace from './JsonSpace';
 import { Container } from './styled';
+import Context from '@pages/state';
 const Content = () => {
-  const [sourceJson, setSourceJson] = useState(
-    `{
-      "a":[
-        12,
-        3]
-    }`,
-  );
-  const [compareJson, setCompareJson] = useState<string>(
-    `{
-      "a":[
-        33,
-        3]
-    }`,
-  );
+  const { state, dispatch } = useContext(Context);
   return (
     <Container>
       <JsonSpace
-        value={sourceJson}
-        compareValue={compareJson}
-        setValue={(value) => setSourceJson(value)}
+        value={state.sourceJson}
+        compareValue={state.compareJson}
+        setValue={(value) => dispatch({ type: 'setSourceJson', sourceJson: value })}
       ></JsonSpace>
       <JsonSpace
-        value={compareJson}
-        compareValue={sourceJson}
-        setValue={(value) => setCompareJson(value)}
+        value={state.compareJson}
+        compareValue={state.sourceJson}
+        setValue={(value) => dispatch({ type: 'setCompareJson', compareJson: value })}
       ></JsonSpace>
     </Container>
   );
