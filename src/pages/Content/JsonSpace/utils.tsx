@@ -12,7 +12,7 @@ export const extend = (sourceObj, compareObj) => {
         obj[key] = extend(obj[key], compareObj[key]);
       }
     } else {
-      obj[key] = null;
+      obj[key] = undefined;
     }
   }
   return obj;

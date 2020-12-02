@@ -1,5 +1,5 @@
 import { BasicType, Status } from './interface';
-import { dataType, serializeObject, stringLoop, isObject } from './utils';
+import { dataType, serializeObject, stringLoop, isObject, extend } from './utils';
 
 const compare = (
   obj: object,
@@ -10,7 +10,7 @@ const compare = (
   const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
   let lineResult: Status[] = [];
   let result: string[] = [];
-  const array = serializeObject(obj);
+  const array = serializeObject(extend(obj, compareObj));
   let index = 0;
   const addLine = (key: BasicType, value: BasicType, type: Status): void => {
     lineResult.push(type);
@@ -22,8 +22,15 @@ const compare = (
       result.push(`${whiteSpace}${value}${lastItem ? '' : ','}`);
     }
   };
-
   const objectCompare = (key, obj: object, compareObj: any) => {
+    // if (obj === undefined) {
+    //   addLine(key, '{', Status.lack);
+    //   const res = compare({}, compareObj, level + 1);
+    //   result.push(...res[0]);
+    //   lineResult.push(...res[1]);
+    //   addLine('', '}', Status.lack);
+    //   return;
+    // }
     if (compareObj === undefined) {
       addLine(key, '{', Status.add);
       const res = compare(obj, {}, level + 1);
@@ -54,6 +61,14 @@ const compare = (
     }
   };
   const ArrayCompare = (key: string, array: any[], compareArray: any[]) => {
+    // if (array === []) {
+    //   addLine(key, '[', Status.lack);
+    //   const res = compare([], { ...compareArray }, level + 1, true);
+    //   result.push(...res[0]);
+    //   lineResult.push(...res[1]);
+    //   addLine('', ']', Status.lack);
+    //   return;
+    // }
     if (compareArray === undefined) {
       addLine(key, '[', Status.add);
       const res = compare({ ...array }, [], level + 1, true);
@@ -68,6 +83,7 @@ const compare = (
       result.push(...res[0]);
       lineResult.push(...res[1]);
       addLine('', ']', Status.eq);
+      return;
     } else {
       addLine(key, '[', Status.diff);
       const res = compare({ ...array }, Array(array.length).fill(Symbol()), level + 1, true);
@@ -76,7 +92,20 @@ const compare = (
       addLine('', ']', Status.diff);
     }
   };
-  const basicCompare = (key, val: BasicType, compareVal: BasicType) => {
+  const basicCompare = (key, val: BasicType, compareVal: any) => {
+    if (val === undefined) {
+      const compareValType = dataType(compareVal);
+      if (compareValType === 'array') {
+        ArrayCompare(key, [], compareVal);
+        return;
+      }
+      if (compareValType === 'object') {
+        objectCompare(key, {}, compareVal);
+        return;
+      }
+      addLine(key, compareVal, Status.lack);
+      return;
+    }
     if (compareVal === undefined) {
       addLine(key, val, Status.add);
       return;

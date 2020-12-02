@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { Action, State } from './interface';
+import Context, { Action, State } from './interface';
 
 const state: State = {
   sourceJson: `{
@@ -27,4 +27,4 @@ export function Reducer() {
   return useReducer(reducer, state);
 }
 
-export default React.createContext({});
+export default React.createContext<Partial<Context>>({});

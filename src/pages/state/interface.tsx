@@ -7,6 +7,7 @@ export interface State {
 export type Action =
   | { type: 'setSourceJson'; sourceJson: string }
   | { type: 'setCompareJson'; compareJson: string };
+    
 
 export default interface Context {
   state: State;
