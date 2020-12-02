@@ -50,3 +50,18 @@ export const serializeObject = (obj: Object): Item[] => {
   }
   return list;
 };
+
+// 判断是否为json
+export const isJSON = (str: string): boolean => {
+  try {
+    var obj = JSON.parse(str);
+    if (typeof obj === 'object' && obj) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log('error：' + str + '!!!' + e);
+    return false;
+  }
+};

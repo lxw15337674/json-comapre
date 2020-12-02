@@ -1,5 +1,5 @@
 import { BasicType, Status } from './interface';
-import { dataType, serializeObject, stringLoop, isObject, extend } from './utils';
+import { dataType, serializeObject, stringLoop, isObject, extend } from '../../../common/utils/utils';
 
 const compare = (
   obj: object,
@@ -23,14 +23,6 @@ const compare = (
     }
   };
   const objectCompare = (key, obj: object, compareObj: any) => {
-    // if (obj === undefined) {
-    //   addLine(key, '{', Status.lack);
-    //   const res = compare({}, compareObj, level + 1);
-    //   result.push(...res[0]);
-    //   lineResult.push(...res[1]);
-    //   addLine('', '}', Status.lack);
-    //   return;
-    // }
     if (compareObj === undefined) {
       addLine(key, '{', Status.add);
       const res = compare(obj, {}, level + 1);
@@ -61,14 +53,6 @@ const compare = (
     }
   };
   const ArrayCompare = (key: string, array: any[], compareArray: any[]) => {
-    // if (array === []) {
-    //   addLine(key, '[', Status.lack);
-    //   const res = compare([], { ...compareArray }, level + 1, true);
-    //   result.push(...res[0]);
-    //   lineResult.push(...res[1]);
-    //   addLine('', ']', Status.lack);
-    //   return;
-    // }
     if (compareArray === undefined) {
       addLine(key, '[', Status.add);
       const res = compare({ ...array }, [], level + 1, true);
