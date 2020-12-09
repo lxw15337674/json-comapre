@@ -1,59 +1,61 @@
-import React, { useMemo, useState } from 'react';
-import compare from './compare';
-import { JsonContainer, LineStatus, NumberLineContainer, ViewLine } from './styled';
+import { Status } from '@/common/utils/interface';
+import { dataType, serializeObject } from '@/common/utils/utils';
+import React, { useMemo } from 'react';
+import compare from '../../../common/utils/jsonCompare';
+import DiffLines from './DiffLines';
+import LineNumberLines from './LineNumberLines';
 interface Props {
-  value: string;
-  compareValue?: string;
+  value: object;
+  compareValue: object;
 }
-const DiffOut = ({ value, compareValue }: Props) => {
-  const [isJson, setIsJson] = useState(true);
 
-  const sourceObj = useMemo((): object => {
-    let result = {};
-    try {
-      result = JSON.parse(value);
-      setIsJson(true);
-      return result;
-    } catch (e) {
-      setIsJson(false);
-      return result;
+const serialize = (statusObj, lineNumberObj, sourceObj) => {
+  let result = [];
+  result.push((fn) =>
+    fn({
+      status: Status.eq,
+      value: undefined,
+    }),
+  );
+  for (let [key, value, index] of serializeObject(lineNumberObj)) {
+    const type = dataType(value);
+    if (type === 'number') {
+      // 传入key，该key所占行数，key的位置，key的diff状态,value的值
+      result.push((fn) =>
+        fn({
+          key,
+          lineNumber: value,
+          index,
+          status: statusObj[key],
+          value: sourceObj?.[key] ?? undefined,
+        }),
+      );
+      continue;
     }
-  }, [value, isJson]);
-  const compareObj = useMemo((): object => {
-    if (!isJson) {
-      return {};
+    result.push(...serialize(statusObj[key], lineNumberObj[key], sourceObj[key]));
+  }
+  result.push((fn) =>
+    fn({
+      status: Status.eq,
+      value: undefined,
+    }),
+  );
+  return result;
+};
+const DiffOut = ({ value, compareValue }: Props) => {
+  const resultLines = useMemo(() => {
+    console.log(compare(value, compareValue));
+    for (let fn of serialize(...compare(value, compareValue), value)) {
+      fn((key, value, index, status) => {
+        console.log(key, value, index, status);
+      });
     }
-    try {
-      return JSON.parse(compareValue);
-    } catch (e) {
-      return {};
-    }
-  }, [compareValue, isJson]);
-  const [comparedJson, lineResult] = useMemo(() => {
-    return compare(sourceObj, compareObj);
-  }, [sourceObj, compareObj]);
+    return serialize(...compare(value, compareValue), value);
+  }, [value, compareValue]);
   return (
     <>
-      {' '}
-      <NumberLineContainer>
-        {lineResult.map((status, index) => {
-          return (
-            <LineStatus status={status} key={index}>
-              {index}
-              {status}
-            </LineStatus>
-          );
-        })}
-      </NumberLineContainer>
-      <JsonContainer>
-        {comparedJson.map((item, index) => {
-          return (
-            <ViewLine status={lineResult[index]} key={index}>
-              {item}
-            </ViewLine>
-          );
-        })}
-      </JsonContainer>
+      <LineNumberLines data={resultLines} />
+      <DiffLines data={value} />
     </>
   );
 };

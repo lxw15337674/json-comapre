@@ -5,23 +5,27 @@ import { isJSON } from '@/common/utils/utils';
 
 const { TextArea } = Input;
 interface Props {
-  value: string;
-  setValue: (value: React.SetStateAction<string>) => void;
+  value: object;
+  setValue: (value: React.SetStateAction<object>) => void;
 }
 
 const CodeContainer = ({ value, setValue }: Props) => {
   const [isJson, setIsJson] = useState(true);
+  const [text, setText] = useState(JSON.stringify(value));
   const onInput = (e) => {
-    setIsJson(isJSON(e.target.value));
+    setText(e.target.value);
+    const isJson = isJSON(e.target.value);
     if (isJson) {
-      setValue(e.target.value);
+      setValue(JSON.parse(e.target.value));
     } else {
-      setValue('');
+      setValue({});
     }
+    setIsJson(isJson);
   };
+
   return (
     <StyledContainer isJson={isJson}>
-      <TextArea defaultValue={value} onChange={onInput}></TextArea>
+      <TextArea value={text} onChange={onInput}></TextArea>
     </StyledContainer>
   );
 };

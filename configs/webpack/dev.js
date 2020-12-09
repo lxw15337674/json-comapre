@@ -15,6 +15,7 @@ module.exports = merge(commonConfig, {
     hot: true, // enable HMR on the server
     compress: true,
     host: '0.0.0.0',
+    open:true,
   },
   devtool: 'cheap-module-eval-source-map',
   plugins: [

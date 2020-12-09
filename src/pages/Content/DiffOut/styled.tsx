@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Status } from './interface';
+import { Status } from '../../../common/utils/interface';
 
 export const StyledContainer = styled.div<{ isJson: boolean }>`
   height: 100%;
