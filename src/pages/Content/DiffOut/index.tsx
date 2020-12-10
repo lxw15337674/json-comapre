@@ -1,15 +1,16 @@
 import { Status } from '@/common/utils/interface';
-import { dataType, serializeObject } from '@/common/utils/utils';
+import { arrayEq, dataType, serializeObject } from '@/common/utils/utils';
 import React, { useMemo } from 'react';
 import compare from '../../../common/utils/jsonCompare';
 import DiffLines from './DiffLines';
 import LineNumberLines from './LineNumberLines';
+import { JsonContainer } from './styled';
 interface Props {
   value: object;
   compareValue: object;
 }
 
-const serialize = (statusObj, lineNumberObj, sourceObj) => {
+const serialize = (statusObj, lineNumberObj, sourceObj, compareObj) => {
   let result = [];
   result.push((fn) =>
     fn({
@@ -28,11 +29,12 @@ const serialize = (statusObj, lineNumberObj, sourceObj) => {
           index,
           status: statusObj[key],
           value: sourceObj?.[key] ?? undefined,
+          compareValue: compareObj?.[key] ?? undefined,
         }),
       );
       continue;
     }
-    result.push(...serialize(statusObj[key], lineNumberObj[key], sourceObj[key]));
+    result.push(...serialize(statusObj[key], lineNumberObj[key], sourceObj[key], compareObj[key]));
   }
   result.push((fn) =>
     fn({
@@ -44,18 +46,23 @@ const serialize = (statusObj, lineNumberObj, sourceObj) => {
 };
 const DiffOut = ({ value, compareValue }: Props) => {
   const resultLines = useMemo(() => {
-    console.log(compare(value, compareValue));
-    for (let fn of serialize(...compare(value, compareValue), value)) {
-      fn((key, value, index, status) => {
-        console.log(key, value, index, status);
-      });
-    }
-    return serialize(...compare(value, compareValue), value);
+    // console.log(compare(value, compareValue));
+    // for (let fn of serialize(...compare(value, compareValue), value, compareValue)) {
+    //   fn((key, value, index, status) => {
+    //     console.log(key, value, index, status);
+    //   });
+    // }
+    return serialize(...compare(value, compareValue), value, compareValue);
   }, [value, compareValue]);
   return (
     <>
       <LineNumberLines data={resultLines} />
-      <DiffLines data={value} />
+      <JsonContainer>
+        <DiffLines data={value} />
+      </JsonContainer>
+      <JsonContainer>
+        <DiffLines data={compareValue} />
+      </JsonContainer>
     </>
   );
 };

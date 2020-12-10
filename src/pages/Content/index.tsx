@@ -18,7 +18,6 @@ const Content = () => {
         ></JsonSpace>
       </InputView>
       <DiffOut value={state.sourceJson} compareValue={state.compareJson}></DiffOut>
-      <DiffOut compareValue={state.sourceJson} value={state.compareJson}></DiffOut>
     </Container>
   );
 };
