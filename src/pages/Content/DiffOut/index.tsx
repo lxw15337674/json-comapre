@@ -1,67 +1,81 @@
 import { Status } from '@/common/utils/interface';
-import { arrayEq, dataType, serializeObject } from '@/common/utils/utils';
+import oppositeStatus from '@/common/utils/oppositeStatus';
+import { dataType, serializeObject } from '@/common/utils/utils';
 import React, { useMemo } from 'react';
 import compare from '../../../common/utils/jsonCompare';
-import DiffLines from './DiffLines';
+import formatToJSON from './formatToJSON';
 import LineNumberLines from './LineNumberLines';
-import { JsonContainer } from './styled';
+import { JsonContainer, ViewLine } from './styled';
 interface Props {
   value: object;
   compareValue: object;
 }
 
 const serialize = (statusObj, lineNumberObj, sourceObj, compareObj) => {
-  let result = [];
-  result.push((fn) =>
-    fn({
-      status: Status.eq,
-      value: undefined,
-    }),
-  );
-  for (let [key, value, index] of serializeObject(lineNumberObj)) {
-    const type = dataType(value);
-    if (type === 'number') {
-      // 传入key，该key所占行数，key的位置，key的diff状态,value的值
-      result.push((fn) =>
-        fn({
-          key,
-          lineNumber: value,
-          index,
-          status: statusObj[key],
-          value: sourceObj?.[key] ?? undefined,
-          compareValue: compareObj?.[key] ?? undefined,
-        }),
+  try {
+    let result = [];
+    result.push((fn) =>
+      fn({
+        status: Status.eq,
+        value: undefined,
+      }),
+    );
+    for (let [key, value, index] of serializeObject(lineNumberObj)) {
+      const type = dataType(value);
+      if (type === 'number') {
+        // 传入key，该key所占行数，key的位置，key的diff状态,value的值
+        result.push((fn) =>
+          fn({
+            key,
+            lineNumber: value,
+            index,
+            status: statusObj[key],
+            value: sourceObj?.[key] ?? undefined,
+            compareValue: compareObj?.[key] ?? undefined,
+          }),
+        );
+        continue;
+      }
+      result.push(
+        ...serialize(statusObj[key], lineNumberObj[key], sourceObj[key], compareObj[key]),
       );
-      continue;
     }
-    result.push(...serialize(statusObj[key], lineNumberObj[key], sourceObj[key], compareObj[key]));
+    result.push((fn) =>
+      fn({
+        status: Status.eq,
+        value: undefined,
+      }),
+    );
+    return result;
+  } catch (e) {
+    return [];
   }
-  result.push((fn) =>
-    fn({
-      status: Status.eq,
-      value: undefined,
-    }),
-  );
-  return result;
 };
 const DiffOut = ({ value, compareValue }: Props) => {
-  const resultLines = useMemo(() => {
-    // console.log(compare(value, compareValue));
-    // for (let fn of serialize(...compare(value, compareValue), value, compareValue)) {
-    //   fn((key, value, index, status) => {
-    //     console.log(key, value, index, status);
-    //   });
-    // }
-    return serialize(...compare(value, compareValue), value, compareValue);
+  const diffResult = useMemo(() => {
+    return compare(value, compareValue)[0];
   }, [value, compareValue]);
   return (
     <>
-      <LineNumberLines data={resultLines} />
+      <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} />
       <JsonContainer>
-        <DiffLines data={value} />
+        {formatToJSON(diffResult, value, compareValue).map(([status, text], index) => {
+          return (
+            <ViewLine status={status} key={index}>
+              {text}
+            </ViewLine>
+          );
+        })}
       </JsonContainer>
+      <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} />
       <JsonContainer>
-        <DiffLines data={compareValue} />
+        {formatToJSON(diffResult, compareValue, value).map(([status, text], index) => {
+          return (
+            <ViewLine status={oppositeStatus(status)} key={index}>
+              {text}
+            </ViewLine>
+          );
+        })}
       </JsonContainer>
     </>
   );

@@ -9,6 +9,7 @@ const jsonValueCallBack = (value: JsonValue, basicTypeFn, ObjectFn, ArrayFn) => 
   if (type === 'array') {
     return ArrayFn(value);
   }
-  basicTypeFn(value);
+  return basicTypeFn(value);
 };
+
 export default jsonValueCallBack;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import JsonSpace from './JsonSpace';
 import { Container, InputView } from './styled';
 import Context from '@pages/state';

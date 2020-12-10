@@ -98,7 +98,7 @@ const compare = (
   value: any,
   compareValue: any,
   options: Options = { arrayOrderSensitive: false },
-): [Status[] | StatusObj, LineNumberObj | LineNumberValue[]] => {
+): any => {
   const type = dataType(value);
   const compareType = dataType(compareValue);
   if (type === compareType) {

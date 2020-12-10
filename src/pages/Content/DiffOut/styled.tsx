@@ -39,6 +39,7 @@ export const HalfHightDiv = styled.div`
 export const ViewLine = styled.div`
   line-height: 25px;
   font-size: 15px;
+  border-bottom: 0.5px solid #bbc;
   ${({ status }: { status?: Status }) => {
     switch (status) {
       case '=':
@@ -66,13 +67,13 @@ export const ViewLine = styled.div`
 `;
 
 export const LineStatus = styled(ViewLine)`
-  width: 40px;
+  width: 50px;
   padding-left: 5px;
 `;
 
 export const NumberLineContainer = styled.div`
   height: 100%;
-  width: 40px;
+  width: 50px;
   border-right: 1px solid #ddd;
   user-select: none;
   color: #999;
@@ -80,6 +81,8 @@ export const NumberLineContainer = styled.div`
 
 export const JsonContainer = styled.div`
   margin-left: 10px;
+  width: 50%;
+  border: 1px solid #bbc;
 `;
 
 export const StyledInputDiv = styled.div`

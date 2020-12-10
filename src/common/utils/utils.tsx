@@ -215,19 +215,6 @@ export const objectToJson = (
   return [lineResult, statusResult];
 };
 
-// Array转json
-export const arrayToJson = (
-  array: any[],
-  status: Status,
-  level: number = 1,
-): [string[], Status[]] => {
-  let lineResult = [],
-    statusResult = [];
-  for (let index in array) {
-  }
-  return [lineResult, statusResult];
-};
-
 // keyValue转json
 interface Options {
   key?: BasicType;
