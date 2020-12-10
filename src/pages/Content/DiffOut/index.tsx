@@ -12,44 +12,45 @@ interface Props {
 }
 
 const serialize = (statusObj, lineNumberObj, sourceObj, compareObj) => {
-  try {
-    let result = [];
-    result.push((fn) =>
-      fn({
-        status: Status.eq,
-        value: undefined,
-      }),
-    );
-    for (let [key, value, index] of serializeObject(lineNumberObj)) {
-      const type = dataType(value);
-      if (type === 'number') {
-        // 传入key，该key所占行数，key的位置，key的diff状态,value的值
-        result.push((fn) =>
-          fn({
-            key,
-            lineNumber: value,
-            index,
-            status: statusObj[key],
-            value: sourceObj?.[key] ?? undefined,
-            compareValue: compareObj?.[key] ?? undefined,
-          }),
-        );
-        continue;
-      }
-      result.push(
-        ...serialize(statusObj[key], lineNumberObj[key], sourceObj[key], compareObj[key]),
+  let result = [];
+  result.push((fn) =>
+    fn({
+      status: Status.eq,
+      value: undefined,
+    }),
+  );
+  for (let [key, value, index] of serializeObject(lineNumberObj)) {
+    const type = dataType(value);
+    if (type === 'number') {
+      // 传入key，该key所占行数，key的位置，key的diff状态,value的值
+      result.push((fn) =>
+        fn({
+          key,
+          lineNumber: value,
+          index,
+          status: statusObj[key],
+          value: sourceObj?.[key] ?? undefined,
+          compareValue: compareObj?.[key] ?? undefined,
+        }),
       );
+      continue;
     }
-    result.push((fn) =>
-      fn({
-        status: Status.eq,
-        value: undefined,
-      }),
+    result.push(
+      ...serialize(
+        statusObj[key],
+        lineNumberObj[key],
+        sourceObj?.[key] ?? undefined,
+        compareObj?.[key] ?? undefined,
+      ),
     );
-    return result;
-  } catch (e) {
-    return [];
   }
+  result.push((fn) =>
+    fn({
+      status: Status.eq,
+      value: undefined,
+    }),
+  );
+  return result;
 };
 const DiffOut = ({ value, compareValue }: Props) => {
   const diffResult = useMemo(() => {
@@ -57,7 +58,7 @@ const DiffOut = ({ value, compareValue }: Props) => {
   }, [value, compareValue]);
   return (
     <>
-      <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} />
+      {/* <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} /> } */}
       <JsonContainer>
         {formatToJSON(diffResult, value, compareValue).map(([status, text], index) => {
           return (
@@ -67,11 +68,11 @@ const DiffOut = ({ value, compareValue }: Props) => {
           );
         })}
       </JsonContainer>
-      <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} />
+      {/* <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} /> */}
       <JsonContainer>
-        {formatToJSON(diffResult, compareValue, value).map(([status, text], index) => {
+        {formatToJSON(diffResult, compareValue, value, true).map(([status, text], index) => {
           return (
-            <ViewLine status={oppositeStatus(status)} key={index}>
+            <ViewLine status={status} key={index}>
               {text}
             </ViewLine>
           );

@@ -16,7 +16,8 @@ const traversingStatus = (value: any, status: Status = Status.diff): any => {
   if (type === 'array') {
     let result = [];
     for (let item of value) {
-      result.push(traversingStatus(item, status));
+      // result.push(traversingStatus(item, status));
+      result.push(status);
     }
     return result;
   }

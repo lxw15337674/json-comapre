@@ -39,26 +39,24 @@ export const HalfHightDiv = styled.div`
 export const ViewLine = styled.div`
   line-height: 25px;
   font-size: 15px;
-  border-bottom: 0.5px solid #bbc;
+  width: 100%;
+  height: 25px;
+  border-bottom: 0.5px solid #f0f0f0;
   ${({ status }: { status?: Status }) => {
     switch (status) {
       case '=':
         return '';
       case '+':
         return `
-        background: green;
-        color:white
+        background: rgba(51,255,51,0.1);
         `;
       case '-':
         return `
-        background:rgb(158, 158, 0);
-        color:white
-        
+        background:#f5b02766;
         `;
       case 'D':
         return `
-        background:red;
-        color:white
+        background:#ff2f0066;
         `;
       default:
         return '';
