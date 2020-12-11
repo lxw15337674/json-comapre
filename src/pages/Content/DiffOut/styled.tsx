@@ -50,11 +50,11 @@ export const ViewLine = styled.div`
         return `
         background: rgba(51,255,51,0.1);
         `;
-      case '-':
+      case 'D':
         return `
         background:#f5b02766;
         `;
-      case 'D':
+      case '-':
         return `
         background:#ff2f0066;
         `;

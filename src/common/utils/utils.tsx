@@ -76,7 +76,7 @@ export const dataType = (val: any): string => {
   return Object.prototype.toString.call(val).replace(/^.{8}(.+)]$/, (m, $1) => $1.toLowerCase());
 };
 
-// 循环对象
+// 循环对象（数组也可以）
 type Item = [string, any, number];
 export const serializeObject = (obj: Object): Item[] => {
   let list: Item[] = [];

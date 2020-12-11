@@ -70,7 +70,7 @@ const DiffOut = ({ value, compareValue }: Props) => {
       </JsonContainer>
       {/* <LineNumberLines data={serialize(...compare(value, compareValue), value, compareValue)} /> */}
       <JsonContainer>
-        {formatToJSON(diffResult, compareValue, value, true).map(([status, text], index) => {
+        {formatToJSON(diffResult, compareValue,value, true).map(([status, text], index) => {
           return (
             <ViewLine status={status} key={index}>
               {text}

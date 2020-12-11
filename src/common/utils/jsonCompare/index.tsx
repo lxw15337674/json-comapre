@@ -17,7 +17,7 @@ import { dataType, serializeObject, extend } from '../utils';
 // 输出两个个值：
 // diff结果对象
 // 待格式化的完整对象
-
+// todo 缺少数组item lack的情况
 const objCompare = (obj: object, compareObj: object): [StatusObj, LineNumberObj] => {
   let statusObj: StatusObj = {};
   let lineObj: LineNumberObj = {};
@@ -25,12 +25,12 @@ const objCompare = (obj: object, compareObj: object): [StatusObj, LineNumberObj]
   for (let [key, value] of array) {
     const compareValue = compareObj[key];
     if (value === undefined) {
-      statusObj[key] = traversingStatus(compareValue, Status.lack);
+      statusObj[key] = Status.lack;
       lineObj[key] = computingLineNumber(compareValue);
       continue;
     }
     if (compareValue === undefined) {
-      statusObj[key] = traversingStatus(value, Status.add);
+      statusObj[key] = Status.add;
       lineObj[key] = computingLineNumber(value);
       continue;
     }
@@ -111,7 +111,7 @@ const compare = (
     console.error('错误类型', type, compareType);
     return [[], []];
   }
-  return computingMaxLineNumber(value, compareValue);
+  return [Status.diff, []];
 };
 
 export default objCompare;
