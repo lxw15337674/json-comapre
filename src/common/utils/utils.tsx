@@ -76,7 +76,7 @@ export const dataType = (val: any): string => {
   return Object.prototype.toString.call(val).replace(/^.{8}(.+)]$/, (m, $1) => $1.toLowerCase());
 };
 
-// 循环对象（数组也可以）
+// 循环对象（数组也可以）,key,value,index
 type Item = [string, any, number];
 export const serializeObject = (obj: Object): Item[] => {
   let list: Item[] = [];
@@ -184,36 +184,36 @@ export const whiteSpace = (level: number): string => {
 
 // 对象转json
 //比如:{a:1} 输出 'a:1'
-export const objectToJson = (
-  obj: object,
-  status: Status,
-  level: number = 1,
-): [string[], Status[]] => {
-  let lineResult = [],
-    statusResult = [];
-  const array = serializeObject(obj);
-  for (let [key, value, index] of array) {
-    statusResult.push(status);
-    if (dataType(value) === 'object') {
-      let res = objectToJson(value, status, level + 1);
-      lineResult.push(...res[0]);
-      statusResult.push(...res[1]);
-      continue;
-    }
-    if (dataType(value) === 'array') {
-      let res = arrayToJson(value, status, level + 1);
-      lineResult.push(...res[0]);
-      statusResult.push(...res[1]);
-      continue;
-    }
-    if (index === array.length - 1) {
-      lineResult.push(keyValueToJson(value, { key }));
-    } else {
-      lineResult.push(keyValueToJson(value, { key }));
-    }
-  }
-  return [lineResult, statusResult];
-};
+// export const objectToJson = (
+//   obj: object,
+//   status: Status,
+//   level: number = 1,
+// ): [string[], Status[]] => {
+//   let lineResult = [],
+//     statusResult = [];
+//   const array = serializeObject(obj);
+//   for (let [key, value, index] of array) {
+//     statusResult.push(status);
+//     if (dataType(value) === 'object') {
+//       let res = objectToJson(value, status, level + 1);
+//       lineResult.push(...res[0]);
+//       statusResult.push(...res[1]);
+//       continue;
+//     }
+//     if (dataType(value) === 'array') {
+//       let res = arrayToJson(value, status, level + 1);
+//       lineResult.push(...res[0]);
+//       statusResult.push(...res[1]);
+//       continue;
+//     }
+//     if (index === array.length - 1) {
+//       lineResult.push(keyValueToJson(value, { key }));
+//     } else {
+//       lineResult.push(keyValueToJson(value, { key }));
+//     }
+//   }
+//   return [lineResult, statusResult];
+// };
 
 // keyValue转json
 interface Options {
@@ -312,32 +312,59 @@ export const computingMaxLineNumber = (
   return [traversingStatus(result, Status.diff), computingLineNumber(result)];
 };
 
-// 判断数组包含，位置不敏感!
+// 位置不敏感的数组是否相等
+export const equal=(array:any[],compareArray:any[]):boolean =>{
+  if(array.length !==compareArray.length){
+    return false
+  } 
+  while(array.length){
+    const eqIndex = find(array[0],compareArray)
+    if(eqIndex===-1){
+      return false
+    }
+    array.splice(0,1)
+    compareArray.splice(eqIndex,1)
+  }
+  return true
+}
+
 export const include = (value: any, array: any[]): boolean => {
+  return find(value, array) !== -1;
+};
+// 判断数组包含，位置不敏感!
+export const find = (value: any, array: any[]): number => {
   const type = dataType(value);
-  for (let item of array) {
+  for (let index = 0; index < array.length; index++) {
+    let item = array[index];
     const itemType = dataType(item);
-    if (type === itemType) {
-      if (isBaseType(item)) {
-        if (item === value) {
-          return true;
-        }
-      } else {
-        if (type === 'array') {
-          for (let valueItem of value) {
-            if (!include(valueItem, item)) {
-              continue;
+    if (type !== itemType) {
+      continue;
+    }
+    if (isBaseType(item)) {
+      if (item === value) {
+        return index;
+      }
+    } else {
+      if (type === 'array') {
+        item = copy(item);
+        if (
+          value.every((vItem) => {
+            const index = find(vItem, item);
+            if (index > -1) {
+              item.splice(index, 1);
             }
-          }
-          return true;
+            return index > -1;
+          })
+        ) {
+          return index;
         }
-        if (type === 'object' && objEq(value, item)) {
-          return true;
-        }
+      }
+      if (type === 'object' && objEq(value, item)) {
+        return index;
       }
     }
   }
-  return false;
+  return -1;
 };
 
 // 判断对象是否相同
@@ -365,13 +392,12 @@ export const objEq = function (obj: object, compareObj: object): boolean {
     }
 
     if (valueType === 'array') {
-      for (let valueItem of value) {
-        if (!include(valueItem, compareValue)) {
-          return false;
-        }
-      }
-      return true;
+      return equal(value,compareValue)
     }
   }
   return true;
+};
+
+export const copy = (v: any) => {
+  return JSON.parse(JSON.stringify(v));
 };

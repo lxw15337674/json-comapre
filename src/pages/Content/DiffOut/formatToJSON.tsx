@@ -1,10 +1,15 @@
 import { BasicType, Status } from '@/common/utils/interface';
 import jsonValueCallBack from '@/common/utils/jsonValueCallback';
-import oppositeStatus from '@/common/utils/oppositeStatus';
-import { countLineNumber, serializeObject, stringLoop } from '@/common/utils/utils';
+import {
+  copy,
+  countLineNumber,
+  find,
+  serializeObject,
+  stringLoop,
+} from '@/common/utils/utils';
 
-export default (diffResult, obj, compareObj, opposite = false) => {
-  return formatToJSON(diffResult, obj, compareObj, 1, opposite);
+export default (diffResult, obj, compareObj) => {
+  return formatToJSON(diffResult, obj, compareObj, 1);
 };
 
 // 格式化key，value
@@ -16,12 +21,12 @@ const parse = (
   lastItem = false,
 ): [Status, string][] => {
   let result = [];
-  const addLine = (key: BasicType, value: BasicType): string => {
+  const addLine = (key: BasicType, value: BasicType, comma = true): string => {
     const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
     if (key === '') {
-      return `${whiteSpace}${value}${lastItem ? '' : ','}`;
+      return `${whiteSpace}${value}${comma ? ',' : ''}`;
     } else {
-      return `${whiteSpace}"${key}" : ${value} ${lastItem ? '' : ','}`;
+      return `${whiteSpace}"${key}" : ${value} ${comma ? ',' : ''}`;
     }
   };
   jsonValueCallBack(
@@ -53,38 +58,24 @@ const parse = (
 //   isArray?: boolean;
 //   opposite?: boolean;
 // }
-const formatToJSON = (
-  diffResult,
-  obj,
-  compareObj,
-  level = 1,
-  opposite = false,
-): [Status, string][] => {
+const formatToJSON = (diffResult, obj, compareObj, level = 1): [Status, string][] => {
+  const isArray = Array.isArray(diffResult);
+  if (isArray) {
+    return arrayToJSON(diffResult, obj, compareObj);
+  }
   let result: [Status, string][] = [];
-  let index = 0;
   const array = serializeObject(diffResult);
-  // const addLine = (key: string, value: BasicType, status: Status): void => {
-  //   const lastItem = index === array.length - 1;
-  //   if (status === Status.lack) {
-  //     result.push([status, '']);
-  //   } else {
-  //     result.push(...parse(key, value, status, level));
-  //   }
-  // };
-  for (let [key, status, itemIndex] of array) {
-    index = itemIndex;
-    if (opposite) {
-      status = oppositeStatus(status);
-    }
+  for (let [key, status, index] of array) {
+    const lastItem = index === array.length - 1;
     jsonValueCallBack(
       status,
       () => {
         if (status === Status.lack) {
-          result.push(...new Array(countLineNumber(compareObj[key])).fill([status, '']));
+          result.push(...parse(isArray ? key : '', compareObj[key], status, level + 1));
           return;
         }
         if (status === Status.diff) {
-          let text = parse(key, obj[key], status, level + 1);
+          let text = parse(isArray ? key : '', obj[key], status, level + 1);
           result.push(...text);
           let length = countLineNumber(compareObj[key]) - text.length;
           if (length > 0) {
@@ -92,83 +83,68 @@ const formatToJSON = (
           }
           return;
         }
-        result.push(...parse(key, obj[key], status, level + 1));
+        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
       },
       () => {
-        result.push(...parse(key, obj[key], status, level + 1));
+        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
       },
       () => {
         if (Array.isArray(status)) {
-          result.push(...parse(key, '[', Status.diff, level + 1));
-          for (let index in status) {
-            // 数组item状态只有eq、lack、add
-            const state = opposite ? oppositeStatus(status[index]) : status[index];
-            if (state === Status.lack) {
-              result.push(...new Array(countLineNumber(compareObj[key][index])).fill([state, '']));
-              continue;
-            }
-            result.push(...parse('', obj[key][index], state, level + 2));
-          }
-          result.push(...parse('', ']', Status.diff, level + 1));
-          return;
+          arrayToJSON(status, obj[key], compareObj[key], level + 1);
         }
-        if (status === Status.lack) {
-          result.push(...new Array(countLineNumber(compareObj[key])).fill([status, '']));
-        } else {
-          result.push(...parse(key, obj[key], status, level + 1));
-        }
+        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
       },
     );
   }
   if (level === 1) {
-    result.unshift([Status.eq, '{']);
-    result.push([Status.eq, '}']);
+    if (isArray) {
+      result.unshift([Status.eq, '[']);
+      result.push([Status.eq, ']']);
+    } else {
+      result.unshift([Status.eq, '{']);
+      result.push([Status.eq, '}']);
+    }
   }
   return result;
 };
 
-// const ArrayFormatToJson = (
-//   diffResult: Status[],
-//   array: any[],
-//   compareArray: any[],
-//   level = 1,
-//   opposite = false,
-// ): [Status, string][] => {
-//   const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
-//   let result: [Status, string][] = [];
-//   const addBaseType = (index: number, status: Status): void => {
-//     result.push([
-//       status,
-//       `${whiteSpace}${array?.[index]} ${index === diffResult.length ? '' : ','}`,
-//     ]);
-//   };
-//   const addReferenceType = (index: number, status: Status) => {
-//     for (let item of stringify(array[index])) {
-//       result.push([status, `${whiteSpace}${item}`]);
-//     }
-//   };
-//   diffResult.forEach((status, index) => {
-//     if (status === Status.lack) {
-//       result.push(...new Array(countLineNumber(array[index])).fill([status, '']));
-//       return;
-//     }
+function arrayToJSON(
+  status: Status[],
+  array: any[],
+  compareArray: any[],
+  level = 0,
+  lastItem = false,
+) {
+  let result = [];
+  result.push(...parse('', '[', Status.diff, level, false));
+  for (let [state, item] of serializeArrayFormat(status, array, compareArray)) {
+    result.push(...parse('', item, state, level + 1));
+  }
+  result.push(...parse('', ']', Status.diff, level, lastItem));
+  return result;
+}
 
-//     jsonValueCallBack(
-//       array[index],
-//       () => {
-//         addBaseType(index, status);
-//       },
-//       () => {
-//         addReferenceType(index, status);
-//       },
-//       () => {
-//         addReferenceType(index, status);
-//       },
-//     );
-//   });
-//   if (level === 1) {
-//     result.unshift([Status.eq, '{']);
-//     result.push([Status.eq, '}']);
-//   }
-//   return result;
-// };
+// 序列化数组
+// diff结果：['+',"-","="], [1,3,4],[2,3,4]
+function serializeArrayFormat(diffResult: Status[], array: any[], compareArray: any[]) {
+  let result = [];
+  array = copy(array);
+  compareArray = copy(compareArray);
+  for (let index in diffResult) {
+    const status = diffResult[index];
+    if (status === Status.lack) {
+      result.push([status, compareArray[0]]);
+      compareArray.splice(0, 1);
+    } else {
+      const compareIndex = find(array[index], compareArray);
+      if(compareIndex>-1){
+        compareArray.splice(compareIndex, 1);
+      }
+      result.push([status, array[index]]);
+    }
+  }
+  for(let item of compareArray){
+    result.push([Status.lack,item])
+  }
+  return result;
+}

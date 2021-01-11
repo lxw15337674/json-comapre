@@ -1,13 +1,10 @@
 import {
-  LineNumberObj,
   Options,
   Status,
   JsonValue,
-  LineNumberValue,
   StatusObj,
 } from '../interface';
-import traversingStatus from '../traversingStatus';
-import { computingMaxLineNumber, isBaseType, computingLineNumber, include } from '../utils';
+import {isBaseType,  include } from '../utils';
 import { dataType, serializeObject, extend } from '../utils';
 
 // export const jsonCompare: JsonCompare = (obj, compareObj, options) => {
@@ -18,44 +15,36 @@ import { dataType, serializeObject, extend } from '../utils';
 // diff结果对象
 // 待格式化的完整对象
 // todo 缺少数组item lack的情况
-const objCompare = (obj: object, compareObj: object): [StatusObj, LineNumberObj] => {
+const objCompare = (obj: object, compareObj: object): StatusObj => {
   let statusObj: StatusObj = {};
-  let lineObj: LineNumberObj = {};
   const array = serializeObject(extend(obj, compareObj));
   for (let [key, value] of array) {
     const compareValue = compareObj[key];
     if (value === undefined) {
       statusObj[key] = Status.lack;
-      lineObj[key] = computingLineNumber(compareValue);
       continue;
     }
     if (compareValue === undefined) {
       statusObj[key] = Status.add;
-      lineObj[key] = computingLineNumber(value);
       continue;
     }
     if (isBaseType(value)) {
       if (isBaseType(compareValue)) {
         statusObj[key] = value === compareValue ? Status.eq : Status.diff;
-        lineObj[key] = 1;
         continue;
       } else {
         statusObj[key] = Status.diff;
-        lineObj[key] = computingLineNumber(compareValue);
         continue;
       }
     }
     if (isBaseType(compareValue)) {
       statusObj[key] = Status.diff;
-      lineObj[key] = computingLineNumber(value);
       continue;
     } else {
-      const res = compare(value, compareValue);
-      statusObj[key] = res[0];
-      lineObj[key] = res[1];
+      statusObj[key] = compare(value, compareValue);
     }
   }
-  return [statusObj, lineObj];
+  return statusObj;
 };
 
 // todo 数组敏感处理
@@ -63,9 +52,8 @@ const arrayCompare = (
   array: JsonValue[],
   compareArray: JsonValue[],
   options: Options = { arrayOrderSensitive: false },
-): [Status[], LineNumberValue[]] => {
+): Status[] => {
   let statusArray: Status[] = [];
-  let lineArray: LineNumberValue[] = [];
   // if (arrayOrderSensitive) {
   //     const length = array.length >= compareArray.length ? array.length : compareArray.length;
   //     for (let index = 0; index < length; index++) {
@@ -88,9 +76,13 @@ const arrayCompare = (
   //   }
   for (let value of array) {
     statusArray.push(include(value, compareArray) ? Status.eq : Status.add);
-    lineArray.push(computingLineNumber(value));
   }
-  return [statusArray, lineArray];
+  let length = compareArray.length-array.length
+  while(length>0){
+    statusArray.push(Status.lack)
+    length--
+  }
+  return statusArray;
 };
 
 //比对引用类型
@@ -109,9 +101,9 @@ const compare = (
       return arrayCompare(value, compareValue);
     }
     console.error('错误类型', type, compareType);
-    return [[], []];
+    return []
   }
-  return [Status.diff, []];
+  return Status.diff;
 };
 
-export default objCompare;
+export default compare;
