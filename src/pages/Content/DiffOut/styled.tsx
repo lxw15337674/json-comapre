@@ -79,7 +79,7 @@ export const NumberLineContainer = styled.div`
 
 export const JsonContainer = styled.div`
   margin-left: 10px;
-  width: 50%;
+  width: 40%;
   border: 1px solid #bbc;
 `;
 

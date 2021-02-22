@@ -1,26 +1,48 @@
+import { curry4 } from '@/common/utils/curry';
 import { BasicType, Status } from '@/common/utils/interface';
 import jsonValueCallBack from '@/common/utils/jsonValueCallback';
-import {
-  copy,
-  countLineNumber,
-  find,
-  serializeObject,
-  stringLoop,
-} from '@/common/utils/utils';
+import { copy, countLineNumber, find, serializeObject, stringLoop } from '@/common/utils/utils';
 
-export default (diffResult, obj, compareObj) => {
-  return formatToJSON(diffResult, obj, compareObj, 1);
+//TODO 改为输出[string[],Status[]]
+export default (diffResult, json, compareJson): [Status[], string[]] => {
+  const data = formatToJSON(diffResult, json, compareJson, 1);
+  return [data.map((item) => item[0]), data.map((item) => item[1])];
 };
 
+// 填充状态list
+const fillStatusList = (textList: string[], status: Status) => {
+  return textList.map((_) => status);
+};
+// 处理数据
+const appendData = (
+  textResult: string[],
+  statusResult: Status[],
+  textList: string[],
+  status: Status,
+) => {
+  textResult.push(...textList);
+  statusResult.push(...fillStatusList(textList, status));
+};
+
+const wrapperData = (
+  textList: string[],
+  statusList: Status[],
+  isArray: boolean,
+  status: Status,
+) => {
+  if (isArray) {
+    textList.unshift('[');
+    textList.push(']');
+  } else {
+    textList.unshift('{');
+    textList.push('}');
+  }
+  statusList.unshift(status);
+  statusList.push(status);
+};
 // 格式化key，value
-const parse = (
-  key: string,
-  value: any,
-  status,
-  level = 1,
-  lastItem = false,
-): [Status, string][] => {
-  let result = [];
+const parse = (key: string, value: any, status, level = 1, lastItem = false): string[] => {
+  let textList: string[] = [];
   const addLine = (key: BasicType, value: BasicType, comma = true): string => {
     const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
     if (key === '') {
@@ -32,38 +54,42 @@ const parse = (
   jsonValueCallBack(
     value,
     () => {
-      result.push([status, addLine(key, value)]);
+      textList.push(addLine(key, value));
     },
     () => {
-      result.push([status, addLine(key, '{')]);
+      textList.push(addLine(key, '{'));
       for (let valueKey in value) {
-        result.push(...parse(valueKey, value[valueKey], status, level + 1));
+        const text = parse(valueKey, value[valueKey], status, level + 1);
+        textList.push(...text);
       }
-      result.push([status, addLine('', '}')]);
+      textList.push(addLine(key, '}'));
     },
     () => {
-      result.push([status, addLine(key, '[')]);
+      textList.push(addLine(key, '['));
       for (let item of value) {
-        result.push(...parse('', item, status, level + 1));
+        const text = parse('', item, status, level + 1);
+        textList.push(...text);
       }
-      result.push([status, addLine('', ']')]);
+      textList.push(addLine(key, ']'));
     },
   );
-  return result;
+  return textList;
 };
 
-//TODO 处理compareValue的结果
 // interface Option {
 //   level?: number;
 //   isArray?: boolean;
 //   opposite?: boolean;
 // }
-const formatToJSON = (diffResult, obj, compareObj, level = 1): [Status, string][] => {
+const formatToJSON = (diffResult, json, compareJson, level = 1): [string[], Status[]] => {
   const isArray = Array.isArray(diffResult);
   if (isArray) {
-    return arrayToJSON(diffResult, obj, compareObj);
+    return arrayToJSON(diffResult, json, compareJson);
   }
-  let result: [Status, string][] = [];
+  const textList: string[] = [];
+  const statusList: Status[] = [];
+  const append = curry4(appendData)(textList, statusList);
+  const wrapper = curry4(wrapperData)(textList, statusList);
   const array = serializeObject(diffResult);
   for (let [key, status, index] of array) {
     const lastItem = index === array.length - 1;
@@ -71,41 +97,41 @@ const formatToJSON = (diffResult, obj, compareObj, level = 1): [Status, string][
       status,
       () => {
         if (status === Status.lack) {
-          result.push(...parse(isArray ? key : '', compareObj[key], status, level + 1));
+          const text = parse(key, compareJson[key], status, level + 1);
+          append(text, status);
           return;
         }
         if (status === Status.diff) {
-          let text = parse(isArray ? key : '', obj[key], status, level + 1);
-          result.push(...text);
-          let length = countLineNumber(compareObj[key]) - text.length;
+          const text = parse(key, json[key], status, level + 1);
+          append(text, status);
+          const length = countLineNumber(compareJson[key]) - text.length;
           if (length > 0) {
-            result.push(...new Array(length).fill([status, '']));
+            append(new Array(length).fill(''), status);
           }
           return;
         }
-        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
+        const text = parse(key, json[key], status, level + 1);
+        append(text, status);
       },
       () => {
-        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
+        const text = parse(key, json[key], status, level + 1);
+        append(text, status);
       },
       () => {
-        if (Array.isArray(status)) {
-          arrayToJSON(status, obj[key], compareObj[key], level + 1);
-        }
-        result.push(...parse(isArray ? key : '', obj[key], status, level + 1));
+        const [t, s] = arrayToJSON(status, json[key], compareJson[key], level + 1);
+        textList.push(...t);
+        statusList.push(...s);
       },
     );
   }
   if (level === 1) {
     if (isArray) {
-      result.unshift([Status.eq, '[']);
-      result.push([Status.eq, ']']);
+      wrapper(true, Status.eq);
     } else {
-      result.unshift([Status.eq, '{']);
-      result.push([Status.eq, '}']);
+      wrapper(false, Status.eq);
     }
   }
-  return result;
+  return [textList, statusList];
 };
 
 function arrayToJSON(
@@ -114,14 +140,16 @@ function arrayToJSON(
   compareArray: any[],
   level = 0,
   lastItem = false,
-) {
-  let result = [];
-  result.push(...parse('', '[', Status.diff, level, false));
+): [string[], Status[]] {
+  let textList = [];
+  let statusList = [];
+  const append = curry4(appendData)(textList, statusList);
+  const wrapper = curry4(wrapperData)(textList, statusList);
   for (let [state, item] of serializeArrayFormat(status, array, compareArray)) {
-    result.push(...parse('', item, state, level + 1));
+    append(parse('', item, state, level + 1), state);
   }
-  result.push(...parse('', ']', Status.diff, level, lastItem));
-  return result;
+  wrapper(true, Status.diff);
+  return [textList, statusList];
 }
 
 // 序列化数组
@@ -137,14 +165,14 @@ function serializeArrayFormat(diffResult: Status[], array: any[], compareArray: 
       compareArray.splice(0, 1);
     } else {
       const compareIndex = find(array[index], compareArray);
-      if(compareIndex>-1){
+      if (compareIndex > -1) {
         compareArray.splice(compareIndex, 1);
       }
       result.push([status, array[index]]);
     }
   }
-  for(let item of compareArray){
-    result.push([Status.lack,item])
+  for (let item of compareArray) {
+    result.push([Status.lack, item]);
   }
   return result;
 }

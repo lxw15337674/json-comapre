@@ -14,7 +14,9 @@ const Content = () => {
         ></JsonSpace>
         <JsonSpace
           value={state.compareJson}
-          setValue={(value) => dispatch({ type: 'setCompareJson', compareJson: value })}
+          setValue={(value) => {
+            dispatch({ type: 'setCompareJson', compareJson: value });
+          }}
         ></JsonSpace>
       </InputView>
       <DiffOut value={state.sourceJson} compareValue={state.compareJson}></DiffOut>

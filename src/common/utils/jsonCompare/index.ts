@@ -1,15 +1,6 @@
-import {
-  Options,
-  Status,
-  JsonValue,
-  StatusObj,
-} from '../interface';
-import {isBaseType,  include } from '../utils';
+import { Options, Status, JsonValue, StatusObj } from '../interface';
+import { isBaseType, include, eq } from '../utils';
 import { dataType, serializeObject, extend } from '../utils';
-
-// export const jsonCompare: JsonCompare = (obj, compareObj, options) => {
-//   return objCompare(obj, compareObj);
-// };
 
 // 输出两个个值：
 // diff结果对象
@@ -47,40 +38,38 @@ const objCompare = (obj: object, compareObj: object): StatusObj => {
   return statusObj;
 };
 
-// todo 数组敏感处理
 const arrayCompare = (
   array: JsonValue[],
   compareArray: JsonValue[],
   options: Options = { arrayOrderSensitive: false },
 ): Status[] => {
   let statusArray: Status[] = [];
-  // if (arrayOrderSensitive) {
-  //     const length = array.length >= compareArray.length ? array.length : compareArray.length;
-  //     for (let index = 0; index < length; index++) {
-  //       if (array[index] === undefined) {
-  //         textArray.push(compareArray[index]);
-  //         diffArray.push(Status.lack);
-  //         continue;
-  //       }
-  //       textArray.push(array[index]);
-  //       if (compareArray === undefined) {
-  //         diffArray.push(Status.add);
-  //         continue;
-  //       }
-  //       if (eq(array[index], compareArray[index])) {
-  //         diffArray.push(Status.eq);
-  //       } else {
-  //         diffArray.push(Status.diff);
-  //       }
-  //     }
-  //   }
-  for (let value of array) {
-    statusArray.push(include(value, compareArray) ? Status.eq : Status.add);
-  }
-  let length = compareArray.length-array.length
-  while(length>0){
-    statusArray.push(Status.lack)
-    length--
+  if (options.arrayOrderSensitive) {
+    const length = array.length >= compareArray.length ? array.length : compareArray.length;
+    for (let index = 0; index < length; index++) {
+      if (array[index] === undefined) {
+        statusArray.push(Status.lack);
+        continue;
+      }
+      if (compareArray === undefined) {
+        statusArray.push(Status.add);
+        continue;
+      }
+      if (eq(array[index], compareArray[index])) {
+        statusArray.push(Status.eq);
+      } else {
+        statusArray.push(Status.diff);
+      }
+    }
+  } else {
+    for (let value of array) {
+      statusArray.push(include(value, compareArray) ? Status.eq : Status.add);
+    }
+    let length = compareArray.length - array.length;
+    while (length > 0) {
+      statusArray.push(Status.lack);
+      length--;
+    }
   }
   return statusArray;
 };
@@ -98,12 +87,15 @@ const compare = (
       return objCompare(value, compareValue);
     }
     if (type === 'array') {
-      return arrayCompare(value, compareValue);
+      return arrayCompare(value, compareValue, options);
     }
     console.error('错误类型', type, compareType);
-    return []
+    return [];
   }
   return Status.diff;
 };
 
 export default compare;
+const value = { a: [1, 2] };
+const compareValue = { a: [2, 1, 3] };
+console.log(compare(value, compareValue, { arrayOrderSensitive: true }));

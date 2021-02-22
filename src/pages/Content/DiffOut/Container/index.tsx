@@ -1,25 +1,24 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import LineNumberLines from './LineNumberLine';
-import { JsonContainer,ViewLine } from '../styled';
+import { JsonContainer, ViewLine } from '../styled';
+import { Status } from '@/common/utils/interface';
 interface Props {
-  data:any[]
+  data: string[];
+  status: Status[];
 }
-const Container = ({data}: Props) => {
-    const Status = useMemo(()=>{
-        return data.map(item=>item[0]) 
-      },[data])
+const Container = ({ data, status }: Props) => {
   return (
-      <>
-    <LineNumberLines data={Status}  />
-    <JsonContainer>
-      {data.map(([status, text], index) => {
-        return (
-          <ViewLine status={status} key={index}>
-            {text}
-          </ViewLine>
-        );
-      })}
-    </JsonContainer>
+    <>
+      <LineNumberLines data={status} />
+      <JsonContainer>
+        {data.map((text, index) => {
+          return (
+            <ViewLine status={status[index]} key={index}>
+              {text}
+            </ViewLine>
+          );
+        })}
+      </JsonContainer>
     </>
   );
 };

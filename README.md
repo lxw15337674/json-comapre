@@ -1,51 +1,86 @@
-# React Webpack Typescript Starter
-> Minimal starter with hot module replacement (HMR) for rapid development.
+# json比对
 
-* **[React](https://facebook.github.io/react/)** (16.x)
-* **[Webpack](https://webpack.js.org/)** (4.x)
-* **[Typescript](https://www.typescriptlang.org/)** (3.x)
-* **[Hot Module Replacement (HMR)](https://webpack.js.org/concepts/hot-module-replacement/)** ([React Hot Loader](https://github.com/gaearon/react-hot-loader))
-* Production build script (Webpack)
-* Image loading/minification ([Image Webpack Loader](https://github.com/tcoopman/image-webpack-loader))
-* [SASS](http://sass-lang.com/) support
-* Code linting ([ESLint](https://github.com/eslint/eslint)) and formatting ([Prettier](https://github.com/prettier/prettier))
-* Test framework ([Jest](https://facebook.github.io/jest/))
+##  API
 
-## Installation
-1. Clone/download repo
-2. `yarn install` (or `npm install` for npm)
+####  jsonCompare(*value*, compareValue,options)
 
-## Usage
-**Development**
+- 参数：
 
-`yarn run start-dev`
+  - value：any
+  - compareValue：any
+  - options:
+    - arrayOrderSensitive：数据顺序敏感
 
-* Build app continuously (HMR enabled)
-* App served @ `http://localhost:8080`
+- 返回值：
 
-**Production**
+  返回比对结果，
 
-`yarn run start-prod`
+- 用法：
 
-* Build app once (HMR disabled) to `/dist/`
-* App served @ `http://localhost:3000`
+  传入两个json，获得比对结果。
 
----
+  比对状态分为四种：
 
-**All commands**
+  ```typescript
+  enum Status {
+   add = '+',
+   lack = '-',
+   diff = 'D',
+   eq = '=',
+  }
+  ```
 
-Command | Description
---- | ---
-`yarn run start-dev` | Build app continuously (HMR enabled) and serve @ `http://localhost:8080`
-`yarn run start-prod` | Build app once (HMR disabled) to `/dist/` and serve @ `http://localhost:3000`
-`yarn run build` | Build app to `/dist/`
-`yarn run test` | Run tests
-`yarn run lint` | Run linter
-`yarn run lint --fix` | Run linter and fix issues
-`yarn run start` | (alias of `yarn run start-dev`)
+- 示例：
 
-**Note**: replace `yarn` with `npm` in `package.json` if you use npm.
+  ```typescript
+  const value = {
+      a1: 2,
+      a: '1',
+      b: [1, 2, '3', { a: 2 }, [2]],
+      c: { a: 2, c: 4 },
+    };
+  const compareValue=  {
+      a: 2,
+      b: { a: 2 },
+      c: { c: 4, a: 2 },
+      d: [1, 2],
+  };
+  console.log(compare(value, compareValue));
+  //{ a1: '+', a: 'D', b: 'D', c: { a: '=', c: '=' }, d: '-' }
+  ```
 
-## See also
-* [React Webpack Babel Starter](https://github.com/vikpe/react-webpack-babel-starter)
-* [Isomorphic Webapp Starter](https://github.com/vikpe/isomorphic-webapp-starter)
+  ```typescript
+  const value = [1, 2];
+  const compareValue = {
+    a: 2,
+  };
+  console.log(compare(value, compareValue));
+  //D 
+  ```
+
+####  formatToJSON(*diffResult*, *obj*, *compareObj*)
+
+- 参数：
+
+  - diffResult：any
+  - obj：any
+  - compareObj:any
+
+- 返回值：
+
+  返回格式化后的json数据和每行比对状态。
+
+  ```typescript
+  enum Status {
+   add = '+',
+   lack = '-',
+   diff = 'D',
+   eq = '=',
+  }
+  ```
+
+- 用法：
+
+  传入比对结果，被比较json，比较json
+
+- 示例：

@@ -313,20 +313,22 @@ export const computingMaxLineNumber = (
 };
 
 // 位置不敏感的数组是否相等
-export const equal=(array:any[],compareArray:any[]):boolean =>{
-  if(array.length !==compareArray.length){
-    return false
-  } 
-  while(array.length){
-    const eqIndex = find(array[0],compareArray)
-    if(eqIndex===-1){
-      return false
-    }
-    array.splice(0,1)
-    compareArray.splice(eqIndex,1)
+export const equal = (array: any[], compareArray: any[]): boolean => {
+  array = copy(array);
+  compareArray = copy(compareArray);
+  if (array.length !== compareArray.length) {
+    return false;
   }
-  return true
-}
+  while (array.length) {
+    const eqIndex = find(array[0], compareArray);
+    if (eqIndex === -1) {
+      return false;
+    }
+    array.splice(0, 1);
+    compareArray.splice(eqIndex, 1);
+  }
+  return true;
+};
 
 export const include = (value: any, array: any[]): boolean => {
   return find(value, array) !== -1;
@@ -354,7 +356,8 @@ export const find = (value: any, array: any[]): number => {
               item.splice(index, 1);
             }
             return index > -1;
-          })
+          }) &&
+          item.length === 0
         ) {
           return index;
         }
@@ -387,12 +390,15 @@ export const objEq = function (obj: object, compareObj: object): boolean {
     if (valueType !== compareValueType) {
       return false;
     }
-    if (isBaseType(valueType)) {
-      return value === compareValue;
+    if (valueType !== 'object' && valueType !== 'array' && value !== compareValue) {
+      return false;
+    }
+    if (valueType === 'object' && !objEq(value, compareValue)) {
+      return false;
     }
 
-    if (valueType === 'array') {
-      return equal(value,compareValue)
+    if (valueType === 'array' && !equal(value, compareValue)) {
+      return false;
     }
   }
   return true;

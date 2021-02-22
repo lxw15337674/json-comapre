@@ -4,18 +4,25 @@ import compare from '../../../common/utils/jsonCompare';
 import Container from './Container';
 import formatToJSON from './formatToJSON';
 interface Props {
-  value: object;
-  compareValue: object;
+  value: any;
+  compareValue: any;
 }
 
 const DiffOut = ({ value, compareValue }: Props) => {
-  const JSON = useMemo(() => {
+  const [status, data] = useMemo(() => {
     return formatToJSON(compare(value, compareValue), value, compareValue);
+  }, [value, compareValue]);
+  console.log(compare(value, compareValue));
+  const compareStatus = useMemo(() => {
+    return status.map((item) => oppositeStatus(item));
+  }, [status]);
+  const compareData = useMemo(() => {
+    return formatToJSON(compare(compareValue, value), compareValue, value)[1];
   }, [value, compareValue]);
   return (
     <>
-      <Container data={JSON}></Container>
-      <Container data={JSON.map((item) => [oppositeStatus(item[0]), item[1]])}></Container>
+      <Container data={data} status={status}></Container>
+      <Container data={compareData} status={compareStatus}></Container>
     </>
   );
 };

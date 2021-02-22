@@ -1,10 +1,10 @@
 export interface State {
-  sourceJson: object;
-  compareJson: object;
+  sourceJson: any;
+  compareJson: any;
   filterKey: string;
   selectedKeys: object;
   arrayOrderSensitive: boolean;
-  json: object;
+  json: any;
 }
 export type Dispatch<A> = (value: A) => void;
 
