@@ -3,10 +3,10 @@ import { BasicType, Status } from '@/common/utils/interface';
 import jsonValueCallBack from '@/common/utils/jsonValueCallback';
 import { copy, countLineNumber, find, serializeObject, stringLoop } from '@/common/utils/utils';
 
-//TODO 改为输出[string[],Status[]]
-export default (diffResult, json, compareJson): [Status[], string[]] => {
+export default (diffResult, json, compareJson): [string[], Status[]] => {
   const data = formatToJSON(diffResult, json, compareJson, 1);
-  return [data.map((item) => item[0]), data.map((item) => item[1])];
+  console.log(data);
+  return data;
 };
 
 // 填充状态list
@@ -14,16 +14,25 @@ const fillStatusList = (textList: string[], status: Status) => {
   return textList.map((_) => status);
 };
 // 处理数据
-const appendData = (
+function appendData(
   textResult: string[],
   statusResult: Status[],
-  textList: string[],
+  textList: string[] | string,
   status: Status,
-) => {
-  textResult.push(...textList);
-  statusResult.push(...fillStatusList(textList, status));
-};
-
+) {
+  if (Array.isArray(textList)) {
+    textResult.push(...textList);
+    statusResult.push(...fillStatusList(textList, status));
+  } else {
+    textResult.push(textList);
+    statusResult.push(status);
+  }
+}
+function pushData(textResult: string[], statusResult: Status[], result: [string[], Status[]]) {
+  const [text, status] = result;
+  textResult.push(...text);
+  statusResult.push(...status);
+}
 const wrapperData = (
   textList: string[],
   statusList: Status[],
@@ -40,9 +49,19 @@ const wrapperData = (
   statusList.unshift(status);
   statusList.push(status);
 };
+
 // 格式化key，value
-const parse = (key: string, value: any, status, level = 1, lastItem = false): string[] => {
-  let textList: string[] = [];
+const parse = (
+  key: string,
+  value: any,
+  status,
+  level = 1,
+  lastItem = false,
+): [string[], Status[]] => {
+  const textList: string[] = [];
+  const statusList: Status[] = [];
+  const append = curry4(appendData)(textList, statusList);
+  const push = curry4(pushData)(textList, statusList);
   const addLine = (key: BasicType, value: BasicType, comma = true): string => {
     const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
     if (key === '') {
@@ -54,26 +73,50 @@ const parse = (key: string, value: any, status, level = 1, lastItem = false): st
   jsonValueCallBack(
     value,
     () => {
-      textList.push(addLine(key, value));
+      append(addLine(key, value), status);
     },
     () => {
-      textList.push(addLine(key, '{'));
-      for (let valueKey in value) {
-        const text = parse(valueKey, value[valueKey], status, level + 1);
-        textList.push(...text);
-      }
-      textList.push(addLine(key, '}'));
+      jsonValueCallBack(
+        status,
+        () => {
+          append(addLine(key, '{', false), status);
+          for (let valueKey in value) {
+            push(parse(valueKey, value[valueKey], status, level + 1));
+          }
+          append(addLine('', '}'), status);
+        },
+        () => {
+          append(addLine(key, '{', false), Status.diff);
+          for (let valueKey in value) {
+            push(parse(valueKey, value[valueKey], status[valueKey], level + 1));
+          }
+          append(addLine('', '}'), Status.diff);
+        },
+        () => {},
+      );
     },
     () => {
-      textList.push(addLine(key, '['));
-      for (let item of value) {
-        const text = parse('', item, status, level + 1);
-        textList.push(...text);
-      }
-      textList.push(addLine(key, ']'));
+      jsonValueCallBack(
+        status,
+        () => {
+          append(addLine(key, '[', false), status);
+          for (let item in value) {
+            push(parse('', item, status, level + 1));
+          }
+          append(addLine('', ']'), status);
+        },
+        () => {},
+        () => {
+          append(addLine(key, '[', false), Status.diff);
+          for (let index in value) {
+            push(parse('', value[index], status[index], level + 1));
+          }
+          append(addLine('', ']'), Status.diff);
+        },
+      );
     },
   );
-  return textList;
+  return [textList, statusList];
 };
 
 // interface Option {
@@ -90,6 +133,7 @@ const formatToJSON = (diffResult, json, compareJson, level = 1): [string[], Stat
   const statusList: Status[] = [];
   const append = curry4(appendData)(textList, statusList);
   const wrapper = curry4(wrapperData)(textList, statusList);
+  const push = curry4(pushData)(textList, statusList);
   const array = serializeObject(diffResult);
   for (let [key, status, index] of array) {
     const lastItem = index === array.length - 1;
@@ -97,30 +141,26 @@ const formatToJSON = (diffResult, json, compareJson, level = 1): [string[], Stat
       status,
       () => {
         if (status === Status.lack) {
-          const text = parse(key, compareJson[key], status, level + 1);
-          append(text, status);
+          push(parse(key, compareJson[key], status, level + 1));
           return;
         }
         if (status === Status.diff) {
-          const text = parse(key, json[key], status, level + 1);
-          append(text, status);
-          const length = countLineNumber(compareJson[key]) - text.length;
+          const [t, s] = parse(key, json[key], status, level + 1);
+          textList.push(...t);
+          statusList.push(...s);
+          const length = countLineNumber(compareJson[key]) - t.length;
           if (length > 0) {
             append(new Array(length).fill(''), status);
           }
           return;
         }
-        const text = parse(key, json[key], status, level + 1);
-        append(text, status);
+        push(parse(key, json[key], status, level + 1));
       },
       () => {
-        const text = parse(key, json[key], status, level + 1);
-        append(text, status);
+        push(parse(key, json[key], status, level + 1));
       },
       () => {
-        const [t, s] = arrayToJSON(status, json[key], compareJson[key], level + 1);
-        textList.push(...t);
-        statusList.push(...s);
+        push(arrayToJSON(status, json[key], compareJson[key], level + 1));
       },
     );
   }
@@ -143,10 +183,10 @@ function arrayToJSON(
 ): [string[], Status[]] {
   let textList = [];
   let statusList = [];
-  const append = curry4(appendData)(textList, statusList);
   const wrapper = curry4(wrapperData)(textList, statusList);
-  for (let [state, item] of serializeArrayFormat(status, array, compareArray)) {
-    append(parse('', item, state, level + 1), state);
+  const push = curry4(pushData)(textList, statusList);
+  for (let [item, state] of serializeArrayFormat(status, array, compareArray)) {
+    push(parse('', item, state, level + 1));
   }
   wrapper(true, Status.diff);
   return [textList, statusList];
@@ -161,18 +201,18 @@ function serializeArrayFormat(diffResult: Status[], array: any[], compareArray: 
   for (let index in diffResult) {
     const status = diffResult[index];
     if (status === Status.lack) {
-      result.push([status, compareArray[0]]);
+      result.push([compareArray[0], status]);
       compareArray.splice(0, 1);
     } else {
       const compareIndex = find(array[index], compareArray);
       if (compareIndex > -1) {
         compareArray.splice(compareIndex, 1);
       }
-      result.push([status, array[index]]);
+      result.push([array[index], status]);
     }
   }
   for (let item of compareArray) {
-    result.push([Status.lack, item]);
+    result.push([item, Status.lack]);
   }
   return result;
 }
