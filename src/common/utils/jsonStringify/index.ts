@@ -1,7 +1,15 @@
 import { curry4 } from '@/common/utils/curry';
 import { BasicType, Status } from '@/common/utils/interface';
 import jsonValueCallBack from '@/common/utils/jsonValueCallback';
-import { copy, countLineNumber, find, serializeObject, stringLoop } from '@/common/utils/utils';
+import {
+  copy,
+  countLineNumber,
+  dataType,
+  find,
+  isBaseType,
+  serializeObject,
+  stringLoop,
+} from '@/common/utils/utils';
 
 export default (diffResult, json, compareJson): [string[], Status[]] => {
   const data = formatToJSON(diffResult, json, compareJson, 1);
@@ -133,7 +141,13 @@ const formatToJSON = (diffResult, json, compareJson, level = 1): [string[], Stat
   const append = curry4(appendData)(textList, statusList);
   const wrapper = curry4(wrapperData)(textList, statusList);
   const push = curry4(pushData)(textList, statusList);
-  const array = serializeObject(diffResult);
+  let array = [];
+  if (isBaseType(diffResult)) {
+    return [[], []];
+  }
+
+  array = serializeObject(diffResult);
+  // const array = serializeObject(diffResult);
   for (let [key, status, index] of array) {
     const lastItem = index === array.length - 1;
     jsonValueCallBack(
