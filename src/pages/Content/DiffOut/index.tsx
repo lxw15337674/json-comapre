@@ -1,4 +1,4 @@
-import oppositeStatus from '@/common/utils/oppositeStatus';
+import { oppositeDiffResult } from '@/common/utils/oppositeStatus';
 import React, { useMemo } from 'react';
 import compare from '../../../common/utils/jsonCompare';
 import Container from './Container';
@@ -9,19 +9,20 @@ interface Props {
 }
 
 const DiffOut = ({ value, compareValue }: Props) => {
+  const diffResult = useMemo(() => {
+    return compare(value, compareValue);
+  }, [value, compareValue]);
   const [data, status] = useMemo(() => {
-    return formatToJSON(compare(value, compareValue), value, compareValue);
+    return formatToJSON(diffResult, value, compareValue);
   }, [value, compareValue]);
-  const compareStatus = useMemo(() => {
-    return status.map((item) => oppositeStatus(item));
-  }, [status]);
-  const compareData = useMemo(() => {
-    return formatToJSON(compare(compareValue, value), compareValue, value)[0];
-  }, [value, compareValue]);
+  const [d, s] = useMemo(() => {
+    const diff = oppositeDiffResult(diffResult);
+    return formatToJSON(diff, compareValue, value);
+  }, [value, compareValue, diffResult]);
   return (
     <>
       <Container data={data} status={status}></Container>
-      <Container data={compareData} status={compareStatus}></Container>
+      <Container data={d} status={s}></Container>
     </>
   );
 };

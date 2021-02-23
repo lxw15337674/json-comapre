@@ -96,6 +96,3 @@ const compare = (
 };
 
 export default compare;
-const value = { a: [1, 2] };
-const compareValue = { a: [2, 1, 3] };
-console.log(compare(value, compareValue, { arrayOrderSensitive: true }));

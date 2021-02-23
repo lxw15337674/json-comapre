@@ -1,5 +1,5 @@
 import React from 'react';
-import LineNumberLines from './LineNumberLine';
+import LineNumberLines from '../LineNumberLine';
 import { JsonContainer, ViewLine } from '../styled';
 import { Status } from '@/common/utils/interface';
 interface Props {

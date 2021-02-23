@@ -5,7 +5,6 @@ import { copy, countLineNumber, find, serializeObject, stringLoop } from '@/comm
 
 export default (diffResult, json, compareJson): [string[], Status[]] => {
   const data = formatToJSON(diffResult, json, compareJson, 1);
-  console.log(data);
   return data;
 };
 
@@ -86,11 +85,11 @@ const parse = (
           append(addLine('', '}'), status);
         },
         () => {
-          append(addLine(key, '{', false), Status.diff);
+          append(addLine(key, '{', false), Status.eq);
           for (let valueKey in value) {
             push(parse(valueKey, value[valueKey], status[valueKey], level + 1));
           }
-          append(addLine('', '}'), Status.diff);
+          append(addLine('', '}'), Status.eq);
         },
         () => {},
       );
@@ -107,11 +106,11 @@ const parse = (
         },
         () => {},
         () => {
-          append(addLine(key, '[', false), Status.diff);
+          append(addLine(key, '[', false), Status.eq);
           for (let index in value) {
             push(parse('', value[index], status[index], level + 1));
           }
-          append(addLine('', ']'), Status.diff);
+          append(addLine('', ']'), Status.eq);
         },
       );
     },
@@ -148,7 +147,7 @@ const formatToJSON = (diffResult, json, compareJson, level = 1): [string[], Stat
           const [t, s] = parse(key, json[key], status, level + 1);
           textList.push(...t);
           statusList.push(...s);
-          const length = countLineNumber(compareJson[key]) - t.length;
+          const length = parse(key, compareJson[key], status, level + 1)[0].length - t.length;
           if (length > 0) {
             append(new Array(length).fill(''), status);
           }
