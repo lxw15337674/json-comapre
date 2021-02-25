@@ -42,6 +42,7 @@ export const ViewLine = styled.div`
   width: 100%;
   height: 25px;
   border-bottom: 0.5px solid #f0f0f0;
+  white-space: nowrap;
   ${({ status }: { status?: Status }) => {
     switch (status) {
       case '=':
@@ -61,7 +62,7 @@ export const ViewLine = styled.div`
       default:
         return '';
     }
-  }}
+  }};
 `;
 
 export const LineStatus = styled(ViewLine)`
@@ -80,6 +81,7 @@ export const NumberLineContainer = styled.div`
 export const JsonContainer = styled.div`
   margin-left: 10px;
   width: 40%;
+  overflow: scroll;
   border: 1px solid #bbc;
 `;
 

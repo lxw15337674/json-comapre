@@ -72,9 +72,9 @@ const parse = (
   const addLine = (key: BasicType, value: BasicType, comma = true): string => {
     const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
     if (key === '') {
-      return `${whiteSpace}${value}${comma ? ',' : ''}`;
+      return `${whiteSpace}${JSON.stringify(value)}${comma ? ',' : ''}`;
     } else {
-      return `${whiteSpace}"${key}" : ${value} ${comma ? ',' : ''}`;
+      return `${whiteSpace}"${key}" : ${JSON.stringify(value)} ${comma ? ',' : ''}`;
     }
   };
   jsonValueCallBack(

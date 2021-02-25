@@ -8,5 +8,5 @@ export const Container = styled('div')`
 `;
 
 export const InputView = styled('div')`
-  width: 50%;
+  width: 40%;
 `;
