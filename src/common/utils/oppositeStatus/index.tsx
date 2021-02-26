@@ -26,7 +26,7 @@ export const oppositeDiffResult = (diffResult) => {
     },
     () => {
       return diffResult.map((item) => {
-        oppositeDiffResult(item);
+        return oppositeDiffResult(item);
       });
     },
   );

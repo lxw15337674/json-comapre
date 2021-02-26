@@ -69,13 +69,24 @@ const parse = (
   const statusList: Status[] = [];
   const append = curry4(appendData)(textList, statusList);
   const push = curry4(pushData)(textList, statusList);
+  const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
   const addLine = (key: BasicType, value: BasicType, comma = true): string => {
-    const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
     if (key === '') {
       return `${whiteSpace}${JSON.stringify(value)}${comma ? ',' : ''}`;
     } else {
       return `${whiteSpace}"${key}" : ${JSON.stringify(value)} ${comma ? ',' : ''}`;
     }
+  };
+  const wrapperData = (isArray: boolean, status: Status) => {
+    if (isArray) {
+      textList.unshift(`${whiteSpace}[`);
+      textList.push(`${whiteSpace}]`);
+    } else {
+      textList.unshift(`${whiteSpace}{`);
+      textList.push(`${whiteSpace}}`);
+    }
+    statusList.unshift(status);
+    statusList.push(status);
   };
   jsonValueCallBack(
     value,
@@ -86,18 +97,17 @@ const parse = (
       jsonValueCallBack(
         status,
         () => {
-          append(addLine(key, '{', false), status);
           for (let valueKey in value) {
             push(parse(valueKey, value[valueKey], status, level + 1));
           }
-          append(addLine('', '}'), status);
+          wrapperData(false, status);
         },
         () => {
-          append(addLine(key, '{', false), Status.eq);
+          append(`${whiteSpace}${key} : {`, Status.eq);
           for (let valueKey in value) {
             push(parse(valueKey, value[valueKey], status[valueKey], level + 1));
           }
-          append(addLine('', '}'), Status.eq);
+          wrapperData(false, Status.eq);
         },
         () => {},
       );
@@ -106,19 +116,17 @@ const parse = (
       jsonValueCallBack(
         status,
         () => {
-          append(addLine(key, '[', false), status);
           for (let item in value) {
             push(parse('', item, status, level + 1));
           }
-          append(addLine('', ']'), status);
+          wrapperData(true, status);
         },
         () => {},
         () => {
-          append(addLine(key, '[', false), Status.eq);
           for (let index in value) {
             push(parse('', value[index], status[index], level + 1));
           }
-          append(addLine('', ']'), Status.eq);
+          wrapperData(true, Status.eq);
         },
       );
     },
