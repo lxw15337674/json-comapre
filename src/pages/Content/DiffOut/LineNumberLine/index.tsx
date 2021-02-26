@@ -3,9 +3,9 @@ import { LineStatus, NumberLineContainer } from '../styled';
 interface Props {
   data: any[];
 }
-const LineNumberLines = ({ data }: Props) => {
+const LineNumberLines = React.forwardRef(({ data }: Props,ref) => {
   return (
-    <NumberLineContainer>
+    <NumberLineContainer ref={ref}>
       {data.map((status, index) => {
         return (
           <LineStatus status={status} key={index}>

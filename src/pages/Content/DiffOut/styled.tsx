@@ -76,6 +76,7 @@ export const NumberLineContainer = styled.div`
   border-right: 1px solid #ddd;
   user-select: none;
   color: #999;
+  overflow: hidden;
 `;
 
 export const JsonContainer = styled.div`
