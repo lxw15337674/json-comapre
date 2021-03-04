@@ -2,10 +2,10 @@ import { Options, Status, JsonValue, StatusObj } from '../interface';
 import { isBaseType, include, eq } from '../utils';
 import { dataType, serializeObject, extend } from '../utils';
 
+let arrayOrderSensitive = false;
 // 输出两个个值：
 // diff结果对象
 // 待格式化的完整对象
-// todo 缺少数组item lack的情况
 const objCompare = (obj: object, compareObj: object): StatusObj => {
   let statusObj: StatusObj = {};
   const array = serializeObject(extend(obj, compareObj));
@@ -38,28 +38,16 @@ const objCompare = (obj: object, compareObj: object): StatusObj => {
   return statusObj;
 };
 
-const arrayCompare = (
-  array: JsonValue[],
-  compareArray: JsonValue[],
-  options: Options = { arrayOrderSensitive: false },
-): Status[] => {
+const arrayCompare = (array: JsonValue[], compareArray: JsonValue[]): Status[] => {
   let statusArray: Status[] = [];
-  if (options.arrayOrderSensitive) {
-    const length = array.length >= compareArray.length ? array.length : compareArray.length;
-    for (let index = 0; index < length; index++) {
-      if (array[index] === undefined) {
-        statusArray.push(Status.lack);
-        continue;
-      }
-      if (compareArray === undefined) {
-        statusArray.push(Status.add);
-        continue;
-      }
-      if (eq(array[index], compareArray[index])) {
-        statusArray.push(Status.eq);
-      } else {
-        statusArray.push(Status.diff);
-      }
+  if (arrayOrderSensitive) {
+    for (let index in array) {
+      statusArray.push(compare(array[index], compareArray[index]));
+    }
+    let length = compareArray.length - array.length;
+    while (length > 0) {
+      statusArray.push(Status.lack);
+      length--;
     }
   } else {
     for (let value of array) {
@@ -75,11 +63,7 @@ const arrayCompare = (
 };
 
 //比对引用类型
-const compare = (
-  value: any,
-  compareValue: any,
-  options: Options = { arrayOrderSensitive: false },
-): any => {
+const compare = (value: any, compareValue: any): any => {
   const type = dataType(value);
   const compareType = dataType(compareValue);
   if (type === compareType) {
@@ -87,12 +71,24 @@ const compare = (
       return objCompare(value, compareValue);
     }
     if (type === 'array') {
-      return arrayCompare(value, compareValue, options);
+      return arrayCompare(value, compareValue);
     }
-    console.error('错误类型', type, compareType);
-    return [];
+    if (!value) {
+      return Status.lack;
+    }
+    if (!compareValue) {
+      return Status.add;
+    }
+    return value === compareValue ? Status.eq : Status.diff;
   }
   return Status.diff;
 };
 
-export default compare;
+export default (
+  value: any,
+  compareValue: any,
+  options: Options = { arrayOrderSensitive: false },
+) => {
+  arrayOrderSensitive = options.arrayOrderSensitive;
+  return compare(value, compareValue);
+};

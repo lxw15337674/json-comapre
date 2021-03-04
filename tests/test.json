@@ -1,0 +1,80 @@
+{
+  "outFit": {
+    "hardOutfitFullVOS": [
+      {
+        "typeId": "3FO4K6QPG07E1",
+        "generalType": 1,
+        "roomId": "19",
+        "roomTypeId": 6,
+        "typeName": "书房",
+        "groundArea": 9.16,
+        "wallArea": 34.48,
+        "groundPerimeter": 12.31,
+        "totalCount": 2,
+        "totalPrice": 0,
+        "levelIndex": 1,
+        "roomName": "书房",
+        "hardOutfits": [
+          {
+            "hardOutfitId": "3FO4JYUJE1PE",
+            "brandGoodId": "3FO4LTTD905Q",
+            "brandId": "3FO4K56QA7N5",
+            "type": "地板",
+            "imageUrl": "https://spriteoss.kujiale.com/tile/preview/2019/03/11/XIX8ZgpvBfEAAQAAAAY.jpg",
+            "name": "金财吉象-F53",
+            "purchaseLink": "",
+            "brand": "c",
+            "code": "",
+            "model": "F53",
+            "specification": "1215.0*197.0",
+            "unit": "平米",
+            "number": 9.16,
+            "lossCoefficient": 0,
+            "unitPrice": null,
+            "discountCoefficient": 1,
+            "realPrice": null,
+            "remark": "",
+            "location": 2,
+            "isPublic": 0,
+            "deducted": false,
+            "packageId": null,
+            "roomId": "19",
+            "typeName": "书房",
+            "productTags": "",
+            "materialName": "",
+            "fromTemplate": 1
+          },
+          {
+            "hardOutfitId": "3FO4JYUJDNCA",
+            "brandGoodId": "3FO4K3F7G8EV",
+            "brandId": null,
+            "type": "门槛石",
+            "imageUrl": "http://qhyxpic.oss.aliyuncs.com/tilepreview/2017/01/03/WGtBMgoBBs9gwwAAABA-normal-large.jpg",
+            "name": "一家瓷业-玛拉兹-迷你-MN1626",
+            "purchaseLink": null,
+            "brand": null,
+            "code": null,
+            "model": "",
+            "specification": "",
+            "unit": "米",
+            "number": 1.04,
+            "lossCoefficient": 0,
+            "unitPrice": null,
+            "discountCoefficient": 1,
+            "realPrice": null,
+            "remark": null,
+            "location": 3,
+            "isPublic": 1,
+            "deducted": false,
+            "packageId": null,
+            "roomId": "19",
+            "typeName": "书房",
+            "productTags": "",
+            "materialName": "",
+            "fromTemplate": 1
+          }
+        ]
+      }
+    ]
+  }
+}
