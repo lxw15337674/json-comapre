@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react';
-import Context, { Action, State } from './interface';
+import React, { useMemo, useReducer } from 'react';
+import Context, { Action, State, Types } from './interface';
 
-const state: State = {
+const initState: State = {
   sourceJson: {
     a1: 2,
     a: '1',
@@ -20,22 +20,39 @@ const state: State = {
   json: {},
 };
 
-const reducer = (state: State, action: Action) => {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'setSourceJson':
+    case Types.SetSourceJson:
       return { ...state, sourceJson: action.sourceJson };
-    case 'setCompareJson':
+    case Types.SetCompareJson:
       return { ...state, compareJson: action.compareJson };
-    case 'setSelectedKeys':
+    case Types.SetSelectedKeys:
       return { ...state, selectedKeys: action.selectedKeys };
-    case 'toggleArrayOrderSensitive':
+    case Types.ToggleArrayOrderSensitive:
       return { ...state, arrayOrderSensitive: !state.arrayOrderSensitive };
     default:
       throw new Error('Unhandled action type');
   }
 };
-export function Reducer() {
-  return useReducer(reducer, state);
-}
 
-export default React.createContext<Partial<Context>>({});
+const getState = () => {
+  let state = initState;
+  let cache = localStorage.getItem('state');
+  if (cache) {
+    state = JSON.parse(cache);
+  }
+  return state;
+};
+
+const cacheState = (state: State, action: Action): State => {
+  const res = reducer(state, action);
+  localStorage.setItem('state', JSON.stringify(res));
+  return res;
+};
+
+export function Reducer(): [State, React.Dispatch<Action>] {
+  const state = useMemo(() => getState(), []);
+  return useReducer(cacheState, state);
+}
+const dispatch = () => void {};
+export default React.createContext<Context>({ state: initState, dispatch });

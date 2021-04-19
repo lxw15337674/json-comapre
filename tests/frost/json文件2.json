@@ -1,0 +1,1625 @@
+{
+    "f": null,
+    "c": "0",
+    "m": "",
+    "d": [
+      
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2203,
+            "userId": null,
+            "name": "脊梁侧盖板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 412,
+            "userId": null,
+            "name": "侧面连锁",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 3777,
+                    "userId": null,
+                    "name": "测试定制二层",
+                    "pid": 412
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2204,
+            "userId": null,
+            "name": "水槽侧盖板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 413,
+            "userId": null,
+            "name": "方舌锁",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 414,
+            "userId": null,
+            "name": "斜舌抽屉锁",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 415,
+            "userId": null,
+            "name": "三合一",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 927,
+            "userId": null,
+            "name": "模型半成品",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 416,
+            "userId": null,
+            "name": "二合一",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 417,
+            "userId": null,
+            "name": "木肖",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 418,
+            "userId": null,
+            "name": "双头螺杆",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 419,
+            "userId": null,
+            "name": "对扣螺丝",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 420,
+            "userId": null,
+            "name": "角码",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 421,
+            "userId": null,
+            "name": "背板条",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 422,
+            "userId": null,
+            "name": "大弯",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 423,
+            "userId": null,
+            "name": "中弯",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 424,
+            "userId": null,
+            "name": "直弯",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 425,
+            "userId": null,
+            "name": "二节轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 426,
+            "userId": null,
+            "name": "三节轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 682,
+            "userId": null,
+            "name": "橱柜吊柜",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 620,
+                    "userId": null,
+                    "name": "转角吊柜",
+                    "pid": 682
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 427,
+            "userId": null,
+            "name": "托底导轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 428,
+            "userId": null,
+            "name": "门挡件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 684,
+            "userId": null,
+            "name": "橱柜中高柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 429,
+            "userId": null,
+            "name": "缓冲阻尼器",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 430,
+            "userId": null,
+            "name": "液压杆",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 686,
+            "userId": null,
+            "name": "橱柜高柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 431,
+            "userId": null,
+            "name": "液压折叠杆",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 432,
+            "userId": null,
+            "name": "背板扣",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 688,
+            "userId": null,
+            "name": "特殊板件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 433,
+            "userId": null,
+            "name": "吊码",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 434,
+            "userId": null,
+            "name": "脚钉",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 435,
+            "userId": null,
+            "name": "橱柜脚",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 436,
+            "userId": null,
+            "name": "调整脚",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 437,
+            "userId": null,
+            "name": "层板托",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 693,
+            "userId": null,
+            "name": "橱柜拉手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 438,
+            "userId": null,
+            "name": "层板销",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 694,
+            "userId": null,
+            "name": "水电配件",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 590,
+                    "userId": null,
+                    "name": "燃气表",
+                    "pid": 694
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 591,
+                    "userId": null,
+                    "name": "分水器",
+                    "pid": 694
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 592,
+                    "userId": null,
+                    "name": "冷热角阀",
+                    "pid": 694,
+                    "children": [
+                        {
+                            "disabled": false,
+                            "checked": false,
+                            "level": 3,
+                            "prodCatId": 3778,
+                            "userId": null,
+                            "name": "测试定制三层",
+                            "pid": 592
+                        }
+                    ]
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 593,
+                    "userId": null,
+                    "name": "插座",
+                    "pid": 694
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 594,
+                    "userId": null,
+                    "name": "开关",
+                    "pid": 694
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 715,
+                    "userId": null,
+                    "name": "燃气表2",
+                    "pid": 694
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 716,
+                    "userId": null,
+                    "name": "燃气表3",
+                    "pid": 694
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 439,
+            "userId": null,
+            "name": "玻璃层板托",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 695,
+            "userId": null,
+            "name": "衣柜底柜",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 548,
+                    "userId": null,
+                    "name": "转角柜",
+                    "pid": 695
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 440,
+            "userId": null,
+            "name": "衣通托",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 696,
+            "userId": null,
+            "name": "橱柜地柜",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 481,
+                    "userId": null,
+                    "name": "转角地柜",
+                    "pid": 696
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 441,
+            "userId": null,
+            "name": "把手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 953,
+            "userId": null,
+            "name": "装饰线条",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 442,
+            "userId": null,
+            "name": "条形拉手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 698,
+            "userId": null,
+            "name": "衣柜顶柜",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 553,
+                    "userId": null,
+                    "name": "转角柜",
+                    "pid": 698
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 443,
+            "userId": null,
+            "name": "欧式拉手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 444,
+            "userId": null,
+            "name": "平板式",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 445,
+            "userId": null,
+            "name": "平板带锁式",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 957,
+            "userId": null,
+            "name": "空间组合",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 446,
+            "userId": null,
+            "name": "丝扣式",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 447,
+            "userId": null,
+            "name": "插入式",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 448,
+            "userId": null,
+            "name": "二节轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 449,
+            "userId": null,
+            "name": "三节轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 450,
+            "userId": null,
+            "name": "上翻滑轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 451,
+            "userId": null,
+            "name": "托底导轨",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 452,
+            "userId": null,
+            "name": "人造石",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 708,
+            "userId": null,
+            "name": "推拉门窗扇",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 453,
+            "userId": null,
+            "name": "防火板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 709,
+            "userId": null,
+            "name": "门芯",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 454,
+            "userId": null,
+            "name": "不锈钢",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 710,
+            "userId": null,
+            "name": "腰线",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 711,
+            "userId": null,
+            "name": "台上柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 712,
+            "userId": null,
+            "name": "楣板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 713,
+            "userId": null,
+            "name": "普通板件",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2037,
+                    "userId": null,
+                    "name": "万能板件",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2053,
+                    "userId": null,
+                    "name": "侧板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2054,
+                    "userId": null,
+                    "name": "活动层板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2055,
+                    "userId": null,
+                    "name": "固定层板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2056,
+                    "userId": null,
+                    "name": "底板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2057,
+                    "userId": null,
+                    "name": "顶板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2059,
+                    "userId": null,
+                    "name": "竖隔板",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2097,
+                    "userId": null,
+                    "name": "万能扫掠",
+                    "pid": 713
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2180,
+                    "userId": null,
+                    "name": "万能斜切扫掠",
+                    "pid": 713
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 971,
+            "userId": null,
+            "name": "嵌入式拉手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 717,
+            "userId": null,
+            "name": "内嵌柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 973,
+            "userId": null,
+            "name": "普通家具",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 462,
+            "userId": null,
+            "name": "水槽",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 463,
+            "userId": null,
+            "name": "龙头",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 719,
+            "userId": null,
+            "name": "通用地柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 464,
+            "userId": null,
+            "name": "拉篮",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 720,
+            "userId": null,
+            "name": "通用吊柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2000,
+            "userId": null,
+            "name": "功能组件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 465,
+            "userId": null,
+            "name": "米箱",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 721,
+            "userId": null,
+            "name": "高柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2001,
+            "userId": null,
+            "name": "连接杆",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 466,
+            "userId": null,
+            "name": "碗盘架",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 722,
+            "userId": null,
+            "name": "台上柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2002,
+            "userId": null,
+            "name": "偏心件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 467,
+            "userId": null,
+            "name": "置物架",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2003,
+            "userId": null,
+            "name": "胶粒",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 468,
+            "userId": null,
+            "name": "垃圾桶",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 724,
+            "userId": null,
+            "name": "整体模块",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2004,
+            "userId": null,
+            "name": "连接件套",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2005,
+                    "userId": null,
+                    "name": "三合一",
+                    "pid": 2004
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2006,
+                    "userId": null,
+                    "name": "二合一",
+                    "pid": 2004
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2007,
+                    "userId": null,
+                    "name": "双向连接",
+                    "pid": 2004
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 469,
+            "userId": null,
+            "name": "踢脚板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 725,
+            "userId": null,
+            "name": "榻榻米",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 470,
+            "userId": null,
+            "name": "线盒",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 471,
+            "userId": null,
+            "name": "挂钩",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 472,
+            "userId": null,
+            "name": "柜脚",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2008,
+            "userId": null,
+            "name": "其他配件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 473,
+            "userId": null,
+            "name": "挂杆",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 985,
+            "userId": null,
+            "name": "层板托",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 474,
+            "userId": null,
+            "name": "穿衣镜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 986,
+            "userId": null,
+            "name": "螺丝",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 475,
+            "userId": null,
+            "name": "拉篮",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 987,
+            "userId": null,
+            "name": "铰链",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 988,
+                    "userId": null,
+                    "name": "内嵌铰链",
+                    "pid": 987
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 989,
+                    "userId": null,
+                    "name": "半盖铰链",
+                    "pid": 987
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 990,
+                    "userId": null,
+                    "name": "全盖铰链",
+                    "pid": 987
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 991,
+                    "userId": null,
+                    "name": "气压撑",
+                    "pid": 987
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 476,
+            "userId": null,
+            "name": "裤架",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2012,
+            "userId": null,
+            "name": "单开门",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2013,
+            "userId": null,
+            "name": "双开门",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2014,
+            "userId": null,
+            "name": "子母门",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2015,
+            "userId": null,
+            "name": "移门",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 992,
+            "userId": null,
+            "name": "铰链部件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2016,
+            "userId": null,
+            "name": "垭口",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 993,
+            "userId": null,
+            "name": "抽屉轨道",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 994,
+                    "userId": null,
+                    "name": "三节轨道",
+                    "pid": 993
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 995,
+                    "userId": null,
+                    "name": "隐藏轨道",
+                    "pid": 993
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2017,
+            "userId": null,
+            "name": "一字型窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2018,
+            "userId": null,
+            "name": "一字型飘窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2019,
+            "userId": null,
+            "name": "L型窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 996,
+            "userId": null,
+            "name": "轨道部件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2020,
+            "userId": null,
+            "name": "L型飘窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 997,
+            "userId": null,
+            "name": "榻榻米升降机",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2021,
+            "userId": null,
+            "name": "U型窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 998,
+            "userId": null,
+            "name": "榻榻米升降机部件",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2022,
+            "userId": null,
+            "name": "U型飘窗",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 743,
+            "userId": null,
+            "name": "功能柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 999,
+            "userId": null,
+            "name": "缓冲器",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2023,
+            "userId": null,
+            "name": "套线",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 1000,
+            "userId": null,
+            "name": "拉直器",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2024,
+            "userId": null,
+            "name": "套板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2025,
+            "userId": null,
+            "name": "门楣",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 746,
+            "userId": null,
+            "name": "导轨",
+            "pid": null,
+            "children": [
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 747,
+                    "userId": null,
+                    "name": "双轨顶轨",
+                    "pid": 746
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 748,
+                    "userId": null,
+                    "name": "双轨底轨",
+                    "pid": 746
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2065,
+                    "userId": null,
+                    "name": "单轨顶轨",
+                    "pid": 746
+                },
+                {
+                    "disabled": false,
+                    "checked": false,
+                    "level": 2,
+                    "prodCatId": 2066,
+                    "userId": null,
+                    "name": "单轨底轨",
+                    "pid": 746
+                }
+            ]
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2028,
+            "userId": null,
+            "name": "平开门扇",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2029,
+            "userId": null,
+            "name": "平开窗扇",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2030,
+            "userId": null,
+            "name": "门槛石",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2031,
+            "userId": null,
+            "name": "窗台",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2032,
+            "userId": null,
+            "name": "执手",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2033,
+            "userId": null,
+            "name": "猫眼",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 498,
+            "userId": null,
+            "name": "掩门",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2034,
+            "userId": null,
+            "name": "铰链",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 499,
+            "userId": null,
+            "name": "抽屉面板",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2035,
+            "userId": null,
+            "name": "合页",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 500,
+            "userId": null,
+            "name": "抽屉（废弃）",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2036,
+            "userId": null,
+            "name": "支撑",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2038,
+            "userId": null,
+            "name": "锁具",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2039,
+            "userId": null,
+            "name": "门吸",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2040,
+            "userId": null,
+            "name": "门插",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2041,
+            "userId": null,
+            "name": "柜体框架",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2042,
+            "userId": null,
+            "name": "淋浴房",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2043,
+            "userId": null,
+            "name": "花洒",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2044,
+            "userId": null,
+            "name": "便器",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 509,
+            "userId": null,
+            "name": "模型半成品",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2045,
+            "userId": null,
+            "name": "浴缸",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2046,
+            "userId": null,
+            "name": "自由柜",
+            "pid": null
+        },
+        {
+            "disabled": false,
+            "checked": false,
+            "level": 1,
+            "prodCatId": 2047,
+            "userId": null,
+            "name": "门窗扇组合",
+            "pid": null
+        }
+    ]
+}

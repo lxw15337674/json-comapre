@@ -6,15 +6,15 @@ import useSyncScroll from '@/common/hooks/useSyncScroll';
 interface Props {
   data: string[];
   status: Status[];
+  contentRefs?: React.MutableRefObject<HTMLElement>;
 }
-const Container = ({ data, status }: Props) => {
-  const lines = useRef<HTMLElement>();
-  const json = useRef<HTMLElement>();
-  useSyncScroll([lines, json], 'top');
+const Container = ({ data, status, contentRefs }: Props) => {
+  const line = useRef<HTMLElement>();
+  useSyncScroll([contentRefs, line], 'top');
   return (
     <>
-      <LineNumberLines data={status} ref={lines} />
-      <JsonContainer ref={json}>
+      <LineNumberLines data={status} ref={line} />
+      <JsonContainer ref={contentRefs}>
         {data.map((text, index) => {
           return (
             <ViewLine status={status[index]} key={index}>

@@ -8,11 +8,19 @@ export interface State {
 }
 export type Dispatch<A> = (value: A) => void;
 
+export enum Types {
+  SetSourceJson = 'setSourceJson',
+  SetCompareJson = 'setCompareJson',
+  SetSelectedKeys = 'setSelectedKeys',
+  ToggleArrayOrderSensitive = 'toggleArrayOrderSensitive',
+}
+
 export type Action =
-  | { type: 'setSourceJson'; sourceJson: State['sourceJson'] }
-  | { type: 'setCompareJson'; compareJson: State['compareJson'] }
-  | { type: 'setSelectedKeys'; selectedKeys: State['selectedKeys'] }
-  | { type: 'toggleArrayOrderSensitive' };
+  | { type: Types.SetSourceJson; sourceJson: State['sourceJson'] }
+  | { type: Types.SetCompareJson; compareJson: State['compareJson'] }
+  | { type: Types.SetSelectedKeys; selectedKeys: State['selectedKeys'] }
+  | { type: Types.ToggleArrayOrderSensitive };
+
 export default interface Context {
   state: State;
   dispatch: Dispatch<Action>;
