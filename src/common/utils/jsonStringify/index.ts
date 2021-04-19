@@ -143,6 +143,10 @@ class jsonStringify {
   };
 
   stringify(level = 1) {
+    if (this.json === null) {
+      this.textResult = [];
+      return;
+    }
     jsonValueCallBack(
       this.diffResult,
       () => {
