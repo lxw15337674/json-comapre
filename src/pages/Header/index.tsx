@@ -4,6 +4,7 @@ import Context from '../state';
 import { Checkbox, Menu } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import useBoolean from '@/common/hooks/useBoolean';
+import { Types } from '../state/interface';
 
 const Header = () => {
   const {
@@ -17,7 +18,7 @@ const Header = () => {
         <Menu.Item>
           <Checkbox
             defaultChecked={arrayOrderSensitive}
-            onChange={() => dispatch({ type: 'toggleArrayOrderSensitive' })}
+            onChange={() => dispatch({ type: Types.ToggleArrayOrderSensitive })}
           >
             数组顺序敏感
           </Checkbox>

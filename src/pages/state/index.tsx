@@ -54,5 +54,4 @@ export function Reducer(): [State, React.Dispatch<Action>] {
   const state = useMemo(() => getState(), []);
   return useReducer(cacheState, state);
 }
-const dispatch = () => void {};
-export default React.createContext<Context>({ state: initState, dispatch });
+export default React.createContext<Partial<Context>>({});

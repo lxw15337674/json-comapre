@@ -6,7 +6,7 @@ import useSyncScroll from '@/common/hooks/useSyncScroll';
 interface Props {
   data: string[];
   status: Status[];
-  contentRefs?: React.MutableRefObject<HTMLElement>;
+  contentRefs: React.MutableRefObject<HTMLElement>;
 }
 const Container = ({ data, status, contentRefs }: Props) => {
   const line = useRef<HTMLElement>();
