@@ -17,7 +17,6 @@ describe('basic ', () => {
       expect(compare([[]], [[]])).toEqual(['=']);
       expect(compare([[[]]], [[[]]])).toEqual(['=']);
     });
-    test('');
   });
 
   test('basic lack', () => {
@@ -39,7 +38,6 @@ describe('not order sensitive array', () => {
       expect(compare([1, 2], [2, 1])).toEqual(['=', '=']);
     });
   });
-  test('');
 });
 
 describe('order Sensitive array', () => {
