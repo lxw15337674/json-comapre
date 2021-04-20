@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "../node_modules/@types"
+    ],
     "target": "ESNext",
     "paths": {
       "@/*": [
@@ -15,6 +18,8 @@
       "ESNext"
     ],
     "types": [
+      "@types/jest",
+      "node",
       "vite/client"
     ],
     "sourceMap": true,
@@ -39,5 +44,5 @@
   "include": [
     "./src",
     "src/common/styled/.tsx"
-  ]
+  ],
 }

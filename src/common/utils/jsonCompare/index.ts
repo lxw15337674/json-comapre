@@ -1,5 +1,5 @@
 import { Options, Status, JsonValue, StatusObj } from '../interface';
-import { isBaseType, include, eq } from '../utils';
+import { isBaseType, include } from '../utils';
 import { dataType, serializeObject, extend } from '../utils';
 
 let arrayOrderSensitive = false;
@@ -72,6 +72,9 @@ const compare = (value: any, compareValue: any): any => {
     }
     if (type === 'array') {
       return arrayCompare(value, compareValue);
+    }
+    if (type === 'null') {
+      return null;
     }
     if (!value) {
       return Status.lack;

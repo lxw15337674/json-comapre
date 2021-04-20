@@ -23,6 +23,7 @@ const Header = () => {
             数组顺序敏感
           </Checkbox>
         </Menu.Item>
+        <Menu.Item onClick={() => dispatch({ type: Types.Reset })}>重置数据</Menu.Item>
       </Menu>
     );
   }, []);

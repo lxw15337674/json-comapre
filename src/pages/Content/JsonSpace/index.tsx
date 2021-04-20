@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyledContainer } from './styled';
 import { Input } from 'antd';
 import { isJSON } from '@/common/utils/utils';
@@ -10,16 +10,16 @@ interface Props {
 }
 
 const CodeContainer = ({ value, setValue }: Props) => {
+  console.log(value);
   const [isJson, setIsJson] = useState(true);
-  const [text, setText] = useState(() => {
+  const text = useMemo(() => {
     if (value === null) {
       return null;
     }
     return JSON.stringify(value);
-  });
-  console.log(text);
+  }, [value]);
   const onInput = (e) => {
-    setText(e.target.value);
+    debugger;
     const isJson = isJSON(e.target.value);
     if (isJson) {
       setValue(JSON.parse(e.target.value));

@@ -30,6 +30,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, selectedKeys: action.selectedKeys };
     case Types.ToggleArrayOrderSensitive:
       return { ...state, arrayOrderSensitive: !state.arrayOrderSensitive };
+    case Types.Reset:
+      return initState;
     default:
       throw new Error('Unhandled action type');
   }
