@@ -2,12 +2,7 @@ import React, { useMemo, useReducer } from 'react';
 import Context, { Action, State, Types } from './interface';
 
 const initState: State = {
-  sourceJson: {
-    a1: 2,
-    a: '1',
-    b: [1, 2, '3', { a: 2 }, [2]],
-    c: { a: 2, c: 4 },
-  },
+  sourceJson: { a1: 2, a: '1', b: [1, 2, '3', { a: 2 }, [2]], c: { a: 2, c: 4 } },
   compareJson: {
     a: 2,
     b: { a: 2 },

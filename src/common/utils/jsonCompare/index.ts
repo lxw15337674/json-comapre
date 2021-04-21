@@ -1,5 +1,5 @@
 import { Options, Status, JsonValue, StatusObj } from '../interface';
-import { isBaseType, include } from '../utils';
+import { isBaseType } from '../utils';
 import { dataType, serializeObject, extend } from '../utils';
 
 let arrayOrderSensitive = false;
@@ -38,8 +38,15 @@ const objCompare = (obj: object, compareObj: object): StatusObj => {
   return statusObj;
 };
 
-const arrayCompare = (array: JsonValue[], compareArray: JsonValue[]): Status[] => {
-  let statusArray: Status[] = [];
+const arrayCompare = (
+  array: JsonValue[],
+  compareArray: JsonValue[],
+  ignoreList: number[] = [],
+): any => {
+  if (array.length === 0 && compareArray.length === 0) {
+    return Status.eq;
+  }
+  let statusArray: any[] = [];
   if (arrayOrderSensitive) {
     for (let index in array) {
       statusArray.push(compare(array[index], compareArray[index]));
@@ -50,8 +57,31 @@ const arrayCompare = (array: JsonValue[], compareArray: JsonValue[]): Status[] =
       length--;
     }
   } else {
+    const ignoreList: number[] = [];
     for (let value of array) {
-      statusArray.push(include(value, compareArray) ? Status.eq : Status.add);
+      //多维数组
+      const type = dataType(value);
+      if (type === 'array') {
+        for (let index in compareArray) {
+          const compareValue = compareArray[index];
+          const compareValueType = dataType(compareValue);
+          if (compareValueType === 'array') {
+            statusArray.push(arrayCompare(value as JsonValue[], compareValue as JsonValue[]));
+            continue;
+          }
+          if (compareArray.length - 1 === Number(index)) {
+            statusArray.push(Status.add);
+          }
+        }
+        continue;
+      }
+      const index = find(value, compareArray, ignoreList);
+      if (index === -1) {
+        statusArray.push(Status.add);
+        continue;
+      }
+      statusArray.push(Status.eq);
+      ignoreList.push(index);
     }
     let length = compareArray.length - array.length;
     while (length > 0) {
@@ -62,16 +92,31 @@ const arrayCompare = (array: JsonValue[], compareArray: JsonValue[]): Status[] =
   return statusArray;
 };
 
+// 判断数组包含，位置不敏感!
+const find = (value: any, array: any[], ignoreList: number[] = []): number => {
+  for (let index = 0; index < array.length; index++) {
+    if (ignoreList.includes(index)) {
+      continue;
+    }
+    const compareValue = array[index];
+    const result = compare(value, compareValue);
+    if (result === Status.eq) {
+      return index;
+    }
+  }
+  return -1;
+};
+
 //比对引用类型
 const compare = (value: any, compareValue: any): any => {
   const type = dataType(value);
   const compareType = dataType(compareValue);
   if (type === compareType) {
     if (type === 'object') {
-      return objCompare(value, compareValue);
+      return objCompare(value as object, compareValue as object);
     }
     if (type === 'array') {
-      return arrayCompare(value, compareValue);
+      return arrayCompare(value as JsonValue[], compareValue as JsonValue[]);
     }
     if (type === 'null') {
       return null;

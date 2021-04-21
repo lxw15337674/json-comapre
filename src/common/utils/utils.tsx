@@ -334,9 +334,12 @@ export const include = (value: any, array: any[]): boolean => {
   return find(value, array) !== -1;
 };
 // 判断数组包含，位置不敏感!
-export const find = (value: any, array: any[]): number => {
+export const find = (value: any, array: any[], ignoreList: number[] = []): number => {
   const type = dataType(value);
   for (let index = 0; index < array.length; index++) {
+    if (ignoreList.includes(index)) {
+      continue;
+    }
     let item = array[index];
     const itemType = dataType(item);
     if (type !== itemType) {

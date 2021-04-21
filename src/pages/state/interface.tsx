@@ -21,6 +21,7 @@ export type Action =
   | { type: Types.SetCompareJson; compareJson: State['compareJson'] }
   | { type: Types.SetSelectedKeys; selectedKeys: State['selectedKeys'] }
   | { type: Types.ToggleArrayOrderSensitive }
+  | { type: Types.ToggleArrayOrderSensitive }
   | { type: Types.Reset };
 
 export default interface Context {
