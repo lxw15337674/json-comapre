@@ -34,7 +34,7 @@
     "isolatedModules": false,
     "allowJs": false,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "strictNullChecks": false,
     "module": "ESNext",
     "moduleResolution": "Node",

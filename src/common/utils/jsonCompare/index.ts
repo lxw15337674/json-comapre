@@ -121,13 +121,13 @@ const compare = (value: any, compareValue: any): any => {
     if (type === 'null') {
       return null;
     }
-    if (!value) {
-      return Status.lack;
-    }
-    if (!compareValue) {
-      return Status.add;
-    }
     return value === compareValue ? Status.eq : Status.diff;
+  }
+  if (!value) {
+    return Status.lack;
+  }
+  if (!compareValue) {
+    return Status.add;
   }
   return Status.diff;
 };
@@ -135,7 +135,7 @@ const compare = (value: any, compareValue: any): any => {
 export default (
   value: any,
   compareValue: any,
-  options: Options = { arrayOrderSensitive: false },
+  options: Options = { arrayOrderSensitive: true },
 ) => {
   arrayOrderSensitive = options.arrayOrderSensitive;
   return compare(value, compareValue);

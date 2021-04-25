@@ -2,13 +2,13 @@ import React, { useMemo, useReducer } from 'react';
 import Context, { Action, State, Types } from './interface';
 
 const initState: State = {
-  sourceJson: { a1: 2, a: '1', b: [1, 2, '3', { a: 2 }, [2]], c: { a: 2, c: 4 } },
-  compareJson: {
+  sourceJson: JSON.stringify({ a1: 2, a: '1', b: [1, 2, '3', { a: 2 }, [2]], c: { a: 2, c: 4 } }),
+  compareJson: JSON.stringify({
     a: 2,
     b: { a: 2 },
     c: { c: 4, a: 2 },
     d: [1, 2],
-  },
+  }),
   filterKey: '',
   selectedKeys: {},
   arrayOrderSensitive: true, //匹配时是否对数组顺序敏感

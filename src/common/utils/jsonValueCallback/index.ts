@@ -4,10 +4,10 @@ import { JsonValue } from './../interface';
 const jsonValueCallBack = (value: JsonValue, basicTypeFn, ObjectFn, ArrayFn) => {
   const type = dataType(value);
   if (type === 'object') {
-    return ObjectFn(value);
+    return ObjectFn(value as object);
   }
   if (type === 'array') {
-    return ArrayFn(value);
+    return ArrayFn(value as any[]);
   }
   return basicTypeFn(value);
 };

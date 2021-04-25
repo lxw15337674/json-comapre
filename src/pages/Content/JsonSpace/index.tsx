@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyledContainer } from './styled';
 import { Input } from 'antd';
 import { isJSON } from '@/common/utils/utils';
@@ -10,38 +10,18 @@ interface Props {
 }
 
 const CodeContainer = ({ value, setValue }: Props) => {
-  const [text, setText] = useState<string>('');
   const isJsonStatus = useMemo(() => {
-    return isJSON(text);
-  }, [text]);
-
-  const formatText = useMemo(() => {
-    if (text === '') {
-      return null;
-    }
-    if (isJsonStatus) {
-      return JSON.stringify(JSON.parse(text), null, 2);
-    }
-    return text;
-  }, [text, isJsonStatus]);
-  useEffect(() => {
-    if (value !== null) {
-      setText(JSON.stringify(value));
-    }
+    return isJSON(value);
   }, [value]);
-  const onInput = (e) => {
-    const isJson = isJSON(e.target.value);
-    if (isJson) {
-      setValue(JSON.parse(e.target.value));
-    } else {
-      setText(e.target.value);
-      setValue(null);
-    }
+
+  const onChange = (e) => {
+    const value = e.target.value;
+    setValue(value);
   };
 
   return (
     <StyledContainer isJson={isJsonStatus}>
-      <TextArea value={formatText} onChange={onInput}></TextArea>
+      <TextArea value={value} onChange={onChange}></TextArea>
     </StyledContainer>
   );
 };

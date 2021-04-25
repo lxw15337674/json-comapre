@@ -1,6 +1,6 @@
 export interface State {
-  sourceJson: any;
-  compareJson: any;
+  sourceJson: string;
+  compareJson: string;
   filterKey: string;
   selectedKeys: object;
   arrayOrderSensitive: boolean;
