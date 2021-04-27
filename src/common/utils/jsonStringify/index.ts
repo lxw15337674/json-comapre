@@ -4,7 +4,38 @@ import { copy, find, serializeObject, stringLoop } from '../utils';
 
 const stringify = (diffResult, json, compareJson, options: Options): [string[], Status[]] => {
   const data = new jsonStringify(diffResult, json, compareJson, options);
+  // console.log(data.getTextResult(), data.getStatusResult());
   return [data.getTextResult(), data.getStatusResult()];
+};
+
+const { diff, eq, lack, add } = Status;
+
+const pushWhiteSpace = (level: number) => {
+  return stringLoop('\xa0\xa0\xa0\xa0', level);
+};
+
+function listFill<T>(length: number, fillText: T): T[] {
+  const textList = [];
+  for (let i = 0; i < length; i++) {
+    textList.push(fillText);
+  }
+  return textList;
+}
+
+// 从节点树获取数据，例如['key','2']=>value.key[2]
+const getValue = (value: any, keyList: any[]) => {
+  if (keyList.length === 0) {
+    return value;
+  }
+  if (keyList.length === 1) {
+    return value?.[keyList[0]];
+  }
+  return getValue(value?.[keyList[0]], keyList.slice(1));
+};
+
+const getKey = (keyList: any): string => {
+  const key = keyList[keyList.length - 1];
+  return /^\d+$/.test(key) ? '' : key;
 };
 
 class jsonStringify {
@@ -13,12 +44,12 @@ class jsonStringify {
   compareJson: any;
   textResult: string[] = [];
   statusResult: Status[] = [];
-  arrayOrderSensitive: Options['arrayOrderSensitive'] = false;
+  options: Options = { arrayOrderSensitive: false };
   constructor(diffResult, json, compareJson, options) {
     this.diffResult = diffResult;
     this.json = json;
     this.compareJson = compareJson;
-    this.arrayOrderSensitive = options.arrayOrderSensitive;
+    this.options = options;
     this.stringify();
   }
   getTextResult() {
@@ -27,18 +58,16 @@ class jsonStringify {
   getStatusResult() {
     return this.statusResult;
   }
-  fillStatusList(textList: string[], status: Status) {
-    return textList.map((_) => status);
-  }
-  appendData(textList: string[] | string, status: Status) {
-    if (Array.isArray(textList)) {
-      this.textResult.push(...textList);
-      this.statusResult.push(...this.fillStatusList(textList, status));
-    } else {
-      this.textResult.push(textList);
-      this.statusResult.push(status);
-    }
-  }
+
+  // appendData(textList: string[] | string, status: Status) {
+  //   if (Array.isArray(textList)) {
+  //     this.textResult.push(...textList);
+  //     this.statusResult.push(...fillStatusList(textList, status));
+  //   } else {
+  //     this.textResult.push(textList);
+  //     this.statusResult.push(status);
+  //   }
+  // }
   pushData(result: [string[], Status[]]) {
     const [text, status] = result;
     this.textResult.push(...text);
@@ -56,84 +85,126 @@ class jsonStringify {
     this.statusResult.push(status);
   }
   parse = (
-    key: string,
-    value: any,
+    keyList: any[], //定义为状态的节点树，例如['key',2]=>value.key[2]
     status: any,
-    level = 1,
     push = true,
     lastItem = false,
   ): [string[], Status[]] => {
     const textList: string[] = [];
     const statusList: Status[] = [];
-    const whiteSpace = stringLoop('\xa0\xa0\xa0\xa0', level);
+    const level = keyList.length;
+    const value = getValue(this.json, keyList);
+    const compareValue = getValue(this.compareJson, keyList);
+    const key = getKey(keyList);
+    const whiteSpace = pushWhiteSpace(level);
     const addLine = (key: BasicType, value: BasicType, comma = true): string => {
-      if (key === '') {
+      if (key === '' || key === undefined || key === null) {
         return `${whiteSpace}${JSON.stringify(value)}${comma ? ',' : ''}`;
       } else {
         return `${whiteSpace}"${key}" : ${JSON.stringify(value)} ${comma ? ',' : ''}`;
       }
     };
-    const pushData = (result: [string[], Status[]]) => {
+    const pushData = (
+      result: [string[], Status[]],
+      tempTextList = textList,
+      tempStatusList = statusList,
+    ) => {
       const [text, status] = result;
-      textList.push(...text);
-      statusList.push(...status);
+      tempTextList.push(...text);
+      tempStatusList.push(...status);
     };
-    const wrapperData = (isArray: boolean, status: Status, key = '') => {
+    const wrapperData = (
+      isArray: boolean,
+      status: Status,
+      key = '',
+      tempTextList = textList,
+      tempStatusList = statusList,
+    ) => {
       if (key) {
         key = `${key} : `;
       }
       if (isArray) {
-        textList.unshift(`${whiteSpace}${key}[`);
-        textList.push(`${whiteSpace}],`);
+        tempTextList.unshift(`${whiteSpace}${key}[`);
+        tempTextList.push(`${whiteSpace}],`);
       } else {
-        textList.unshift(`${whiteSpace}${key}{`);
-        textList.push(`${whiteSpace}},`);
+        tempTextList.unshift(`${whiteSpace}${key}{`);
+        tempTextList.push(`${whiteSpace}},`);
       }
-      statusList.unshift(status);
-      statusList.push(status);
+      tempStatusList.unshift(status);
+      tempStatusList.push(status);
     };
-
     jsonValueCallBack(
-      value,
-      () => {
-        textList.push(addLine(key, value));
-        statusList.push(status);
-      },
-      () => {
+      status,
+      (status: Status) => {
+        if (status === lack) {
+          console.log('lack');
+          const value = key ? { [key]: compareValue } : compareValue;
+          let textList = new jsonStringify(add, value, undefined, this.options).getTextResult();
+          if (key) {
+            textList = textList.slice(1, -1);
+          }
+          pushData([textList, listFill(textList.length, lack)]);
+          console.log(textList, statusList);
+          return;
+        }
+        let tempTextList = [];
+        let tempStatusList = [];
         jsonValueCallBack(
-          status,
+          value,
+          () => {
+            tempTextList.push(addLine(key, value));
+            tempStatusList.push(status);
+          },
           () => {
             for (let valueKey in value) {
-              pushData(this.parse(valueKey, value[valueKey], status, level + 1, false));
+              const key = [...keyList, valueKey];
+              pushData(this.parse(key, status, false), tempTextList, tempStatusList);
             }
-            wrapperData(false, status, key);
+            wrapperData(false, status, key, tempTextList, tempStatusList);
           },
           () => {
-            for (let valueKey in value) {
-              pushData(this.parse(valueKey, value[valueKey], status[valueKey], level + 1, false));
+            for (let index in value) {
+              const key = [...keyList, index];
+              // console.log('array parse', key, ...this.parse(key, status, false));
+              pushData(this.parse(key, status, false), tempTextList, tempStatusList);
             }
-            wrapperData(false, Status.eq, key);
+            wrapperData(true, status, key, tempTextList, tempStatusList);
           },
-          () => {},
         );
+        textList.push(...tempTextList);
+        statusList.push(...tempStatusList);
+        if (status === diff) {
+          const value = key ? { [key]: compareValue } : compareValue;
+          let compareValueLength = new jsonStringify(
+            add,
+            value,
+            undefined,
+            this.options,
+          ).getTextResult().length;
+          if (key) {
+            compareValueLength = compareValueLength - 2;
+          }
+          const lackLength = compareValueLength - tempTextList.length; //要空出对应的行数
+          if (lackLength > 0) {
+            textList.push(...listFill(lackLength, ''));
+            statusList.push(...listFill(lackLength, diff));
+            console.log(textList);
+          }
+        }
       },
-      () => {
-        jsonValueCallBack(
-          status,
-          () => {
-            for (let index in value) {
-              pushData(this.parse('', value[index], status, level + 1, false));
-            }
-            wrapperData(true, status, key);
-          },
-          () => {},
-          () => {
-            for (let index in value) {
-              pushData(this.parse('', value[index], status[index], level + 1, false));
-            }
-            wrapperData(true, Status.eq, key);
-          },
-        );
+      (status: object) => {
+        for (let valueKey in status) {
+          const key = [...keyList, valueKey];
+          pushData(this.parse(key, status[valueKey], false));
+        }
+        wrapperData(false, eq, key);
+      },
+      (status: Status[]) => {
+        for (let index in status) {
+          const key = [...keyList, index];
+          pushData(this.parse(key, status[index], false));
+        }
+        wrapperData(true, eq, key);
       },
     );
     if (push) {
@@ -150,102 +221,25 @@ class jsonStringify {
     jsonValueCallBack(
       this.diffResult,
       () => {
-        this.parse('', this.json, this.diffResult, 1);
+        this.parse([], this.diffResult);
       },
       () => {
         const array = serializeObject(this.diffResult);
         for (let [key, status, index] of array) {
           const lastItem = index === array.length - 1;
-          jsonValueCallBack(
-            status,
-            () => {
-              if (status === Status.lack) {
-                this.parse(key, this.compareJson[key], status, level + 1);
-                return;
-              }
-              if (status === Status.diff) {
-                const [t, s] = this.parse(key, this.json[key], status, level + 1);
-                const length =
-                  this.parse(key, this.compareJson[key], status, level + 1, false)[0].length -
-                  t.length;
-                if (length > 0) {
-                  this.appendData(new Array(length).fill(''), status);
-                }
-                return;
-              }
-              this.parse(key, this.json[key], status, level + 1);
-            },
-            () => {
-              this.parse(key, this.json[key], status, level + 1);
-            },
-            () => {
-              this.parse(key, this.json[key], status, level + 1);
-            },
-          );
+          this.parse([key], status);
         }
         this.wrapperData(Array.isArray(this.json), Status.eq);
       },
       () => {
-        this.arrayToJSON(this.diffResult, this.json, this.compareJson);
+        const array = serializeObject(this.diffResult);
+        for (let [key, status, index] of array) {
+          const lastItem = index === array.length - 1;
+          this.parse([key], status);
+        }
+        this.wrapperData(Array.isArray(this.json), Status.eq);
       },
     );
-  }
-  arrayToJSON(status: Status[], array: any[], compareArray: any[], level = 0, lastItem = false) {
-    let index = 0;
-    for (let [item, state] of this.serializeArrayFormat(status, array, compareArray)) {
-      if (state === Status.diff) {
-        const [t, s] = this.parse('', item, state, level + 1);
-        console.log(this.parse('', compareArray[index], status, level + 1, false));
-        const length =
-          this.parse('', compareArray[index], state, level + 1, false)[0].length - t.length;
-        if (length > 0) {
-          this.appendData(new Array(length).fill(''), state);
-        }
-        return;
-      }
-      this.parse('', item, state, level + 1);
-      index++;
-    }
-    this.wrapperData(true, Status.diff);
-  }
-  // 序列化数组
-  // diff结果：['+',"-","="], [1,3,4],[2,3,4]
-  serializeArrayFormat(diffResult: Status[], array: any[], compareArray: any[]): any[][] {
-    let result = [];
-    if (this.arrayOrderSensitive) {
-      for (let index in array) {
-        const status = diffResult[index];
-        if (status === Status.lack) {
-          result.push([compareArray[index], Status.lack]);
-        } else {
-          result.push([array[index], status]);
-        }
-      }
-      for (let index = array.length; index < compareArray.length; index++) {
-        result.push([compareArray[index], Status.lack]);
-      }
-      return result;
-    }
-    array = copy(array);
-    compareArray = copy(compareArray);
-    for (let index in diffResult) {
-      const status = diffResult[index];
-      if (status === Status.lack) {
-        result.push([compareArray[0], Status.lack]);
-        compareArray.splice(0, 1);
-      } else {
-        const compareIndex = find(array[index], compareArray);
-        if (compareIndex > -1) {
-          compareArray.splice(compareIndex, 1);
-        }
-        result.push([array[index], status]);
-      }
-    }
-
-    for (let item of compareArray) {
-      result.push([item, Status.lack]);
-    }
-    return result;
   }
 }
 export default stringify;
