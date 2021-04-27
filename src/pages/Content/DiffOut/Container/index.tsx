@@ -18,7 +18,7 @@ const Container = ({ data, status, contentRefs }: Props) => {
         {data.map((text, index) => {
           return (
             <ViewLine status={status[index]} key={index}>
-              {text}
+              {status[index] !== Status.lack && text}
             </ViewLine>
           );
         })}

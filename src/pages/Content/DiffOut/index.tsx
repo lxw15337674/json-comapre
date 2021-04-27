@@ -25,7 +25,7 @@ const DiffOut = ({ value, compareValue }: Props) => {
   }, [compareValue]);
 
   const diffResult = useMemo(() => {
-    console.log(compare(valueJson, compareJson, { arrayOrderSensitive }));
+    // console.log(compare(valueJson, compareJson, { arrayOrderSensitive }));
     return compare(valueJson, compareJson, { arrayOrderSensitive });
   }, [valueJson, compareJson]);
 

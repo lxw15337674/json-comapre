@@ -4,7 +4,6 @@ import { copy, find, serializeObject, stringLoop } from '../utils';
 
 const stringify = (diffResult, json, compareJson, options: Options): [string[], Status[]] => {
   const data = new jsonStringify(diffResult, json, compareJson, options);
-  // console.log(data.getTextResult(), data.getStatusResult());
   return [data.getTextResult(), data.getStatusResult()];
 };
 
@@ -137,14 +136,14 @@ class jsonStringify {
       status,
       (status: Status) => {
         if (status === lack) {
-          console.log('lack');
+          // console.log('lack');
           const value = key ? { [key]: compareValue } : compareValue;
           let textList = new jsonStringify(add, value, undefined, this.options).getTextResult();
           if (key) {
             textList = textList.slice(1, -1);
           }
           pushData([textList, listFill(textList.length, lack)]);
-          console.log(textList, statusList);
+          // console.log(textList, statusList);
           return;
         }
         let tempTextList = [];
@@ -188,7 +187,7 @@ class jsonStringify {
           if (lackLength > 0) {
             textList.push(...listFill(lackLength, ''));
             statusList.push(...listFill(lackLength, diff));
-            console.log(textList);
+            // console.log(textList);
           }
         }
       },

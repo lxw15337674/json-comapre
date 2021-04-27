@@ -16,12 +16,12 @@ const Header = () => {
     return (
       <Menu>
         <Menu.Item>
-          <Checkbox
+          {/* <Checkbox
             defaultChecked={arrayOrderSensitive}
             onChange={() => dispatch({ type: Types.ToggleArrayOrderSensitive })}
           >
             数组顺序敏感
-          </Checkbox>
+          </Checkbox> */}
         </Menu.Item>
         <Menu.Item onClick={() => dispatch({ type: Types.Reset })}>重置数据</Menu.Item>
       </Menu>
