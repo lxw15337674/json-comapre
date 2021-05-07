@@ -15,6 +15,7 @@ function useEventListener(eventName: string, handler: (e) => void, options: Opti
   useEffect(() => {
     const targetElement = getTargetElement(options.target, window);
     if (!targetElement?.addEventListener) {
+      //@ts-ignore
       return;
     }
 

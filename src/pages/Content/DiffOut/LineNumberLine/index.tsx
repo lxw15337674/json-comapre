@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from 'react';
 import { LineStatus, NumberLineContainer } from '../styled';
 interface Props {

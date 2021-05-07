@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useRef } from 'react';
 import LineNumberLines from '../LineNumberLine';
 import { JsonContainer, ViewLine } from '../styled';
