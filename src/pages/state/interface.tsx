@@ -14,6 +14,7 @@ export enum Types {
   SetSelectedKeys = 'setSelectedKeys',
   ToggleArrayOrderSensitive = 'toggleArrayOrderSensitive',
   Reset = 'reset',
+  ClearData = 'clearData',
 }
 
 export type Action =
@@ -22,7 +23,8 @@ export type Action =
   | { type: Types.SetSelectedKeys; selectedKeys: State['selectedKeys'] }
   | { type: Types.ToggleArrayOrderSensitive }
   | { type: Types.ToggleArrayOrderSensitive }
-  | { type: Types.Reset };
+  | { type: Types.Reset }
+  | { type: Types.ClearData };
 
 export default interface Context {
   state: State;

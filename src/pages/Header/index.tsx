@@ -24,6 +24,7 @@ const Header = () => {
           </Checkbox> */}
         </Menu.Item>
         <Menu.Item onClick={() => dispatch({ type: Types.Reset })}>重置数据</Menu.Item>
+        <Menu.Item onClick={() => dispatch({ type: Types.ClearData })}>清空数据</Menu.Item>
       </Menu>
     );
   }, []);

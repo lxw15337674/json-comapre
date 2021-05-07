@@ -27,6 +27,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, arrayOrderSensitive: !state.arrayOrderSensitive };
     case Types.Reset:
       return initState;
+    case Types.ClearData:
+      return { ...state, sourceJson: '', compareJson: '' };
     default:
       throw new Error('Unhandled action type');
   }
