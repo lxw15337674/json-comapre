@@ -10,4 +10,7 @@ export default defineConfig({
       entries: [{ find: '@', replacement: '/src/' }],
     }),
   ],
+  build: {
+    outDir: 'build',
+  },
 });
